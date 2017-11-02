@@ -54,6 +54,8 @@ class CustomPopup extends Module
 
         Configuration::updateValue('CUSTOMPOPUP_MAINSELECT', 1);
         Configuration::updateValue('CUSTOMPOPUP_ENABLED', 0);
+        Configuration::updateValue('CUSTOMPOPUP_COOKIE', 0);
+        Configuration::updateValue('CUSTOMPOPUP_DELAY', 0);
 
         return parent::install() &&
             $this->installDb() &&
@@ -299,7 +301,7 @@ class CustomPopup extends Module
     public function displayTabs()
     {
         return
-            '<script src="../modules/custompopup/js/remember_tab.js"></script>
+            '<script src="../modules/custompopup/views/js/remember_tab.js"></script>
         <div role="tabpanel">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs nav-tabs-sticky" role="tablist">
@@ -364,10 +366,23 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 array('isnumber' => 1)
             );
 
+            $Validation->validate(
+                $this->l('Cookie length'),
+                Tools::getValue('CUSTOMPOPUP_DELAY'),
+                array('isnumber' => 1)
+            );
+
             $langContent = array();
 
             foreach ($languages as $la) {
                 $langContent[$la['id_lang']] = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$la['id_lang']);
+            }
+
+            foreach ($languages as $lang)
+            {
+                $Validation->validate($this->l('Popup content'),Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),array(
+                    'notempty' => 1,
+                ));
             }
 
             // if no errors occured
@@ -398,6 +413,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             }
 
             Configuration::updateValue('CUSTOMPOPUP_COOKIE', Tools::getValue('CUSTOMPOPUP_COOKIE'));
+            Configuration::updateValue('CUSTOMPOPUP_DELAY', Tools::getValue('CUSTOMPOPUP_DELAY'));
 
             $this->_clearCache('custompopup.tpl');
             return $this->displayConfirmation($this->l('The settings have been updated.'));
@@ -648,6 +664,15 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                         'desc' => $this->l('Type 0 to make popup always appearing'),
                         'class' => 'fixed-width-sm',
                         'hint' => $this->l('If user closes popup, it will appear again after this time')
+                    ),
+                    array(
+                        'type' => 'text',
+                        'label' => $this->l('Popup delay'),
+                        'suffix' => $this->l('seconds'),
+                        'name' => 'CUSTOMPOPUP_DELAY',
+                        'required' => true,
+                        'desc' => $this->l('Type 0 to show immediately'),
+                        'class' => 'fixed-width-sm',
                     ),
                     array(
                         'class' => 'rte',
@@ -966,6 +991,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
 
         $fields['CUSTOMPOPUP_ENABLED'] = Configuration::get('CUSTOMPOPUP_ENABLED');
         $fields['CUSTOMPOPUP_COOKIE'] = Configuration::get('CUSTOMPOPUP_COOKIE');
+        $fields['CUSTOMPOPUP_DELAY'] = Configuration::get('CUSTOMPOPUP_DELAY');
 
         return $fields;
     }
@@ -1260,6 +1286,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
     {
         return array(
             'popup_cookie' => Configuration::get('CUSTOMPOPUP_COOKIE'),
+            'popup_delay' => Configuration::get('CUSTOMPOPUP_DELAY'),
             'popup_enabled' => Configuration::get('CUSTOMPOPUP_ENABLED'),
             'popup_color' => Configuration::get('CUSTOMPOPUP_COLOR'),
             'back_color' => Configuration::get('CUSTOMPOPUP_BACK_COLOR'),

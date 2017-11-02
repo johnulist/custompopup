@@ -15,10 +15,17 @@
     <script>
         $(function() {
 
-            var popup = new $.Popup();
-            if ($.cookie('responsive_popup') == null) {
-                popup.open('#inline');
-            }
+            {/literal}{if $popup_delay > 0}{literal}
+            setTimeout(function(){
+            {/literal}{/if}{literal}
+                var popup = new $.Popup();
+                if ($.cookie('responsive_popup') == null) {
+                    popup.open('#inline');
+                }
+            {/literal}{if $popup_delay > 0}{literal}
+            },  {/literal}{$popup_delay*1000}{literal});
+            {/literal}{/if}{literal}
+
             $(".popup_close").click(function(){
                 $.cookie('responsive_popup', 'yes', { expires: {/literal}{$popup_cookie*0.000694}{literal}, path: '/' });
             });
@@ -38,6 +45,10 @@
             background-color:{/literal} {$popup_color}{literal};
             padding:{/literal} {$padding}{literal}px;
             padding-top:{/literal} {$top_padding}{literal}px;
+        }
+        div.popup img {
+            max-width: 100%;
+            height: auto;
         }
         .popup_back {
             background-color: {/literal}{$back_color}{literal};
