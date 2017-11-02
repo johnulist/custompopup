@@ -1040,7 +1040,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             $this->unregisterHook('displayFooterProduct');
             $this->unregisterHook('displayCarrierList');
 
-            if(CustomPopup::getVersion() == "1.7") {
+            if (CustomPopup::getVersion() == "1.7") {
                 $this->unregisterHook('displayCustomerAccount');
                 $this->unregisterHook('displayAfterCarrier');
             }
@@ -1051,13 +1051,13 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 $this->unregisterHook('home');
             }
             if (self::checkEnable('MyAccount')) {
-                if(CustomPopup::getVersion() == "1.7") {
+                if (CustomPopup::getVersion() == "1.7") {
                     $this->registerHook('displayCustomerAccount');
                 } else {
                     $this->registerHook('displayMyAccountBlockfooter');
                 }
             } else {
-                if(CustomPopup::getVersion() == "1.7") {
+                if (CustomPopup::getVersion() == "1.7") {
                     $this->unregisterHook('displayCustomerAccount');
                 } else {
                     $this->unregisterHook('displayMyAccountBlockfooter');
@@ -1089,13 +1089,13 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 $this->unregisterHook('displayFooterProduct');
             }
             if (self::checkEnable('CarrierList')) {
-                if(CustomPopup::getVersion() == "1.7") {
+                if (CustomPopup::getVersion() == "1.7") {
                     $this->registerHook('displayAfterCarrier');
                 } else {
                     $this->registerHook('displayCarrierList');
                 }
             } else {
-                if(CustomPopup::getVersion() == "1.7") {
+                if (CustomPopup::getVersion() == "1.7") {
                     $this->unregisterHook('displayAfterCarrier');
                 } else {
                     $this->unregisterHook('displayCarrierList');
@@ -1104,7 +1104,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
         } else {
             if ($fields['mainselect'] == 1 || Configuration::get('CUSTOMPOPUP_MAINSELECT') == 1) {
                 $this->registerHook('home');
-                if(CustomPopup::getVersion() == "1.7") {
+                if (CustomPopup::getVersion() == "1.7") {
                     $this->unregisterHook('displayCustomerAccount');
                 } else {
                     $this->unregisterHook('displayMyAccountBlockfooter');
@@ -1119,7 +1119,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             if ($fields['mainselect'] == 2 || Configuration::get('CUSTOMPOPUP_MAINSELECT') == 2) {
                 $this->registerHook('displayFooter');
                 $this->unregisterHook('home');
-                if(CustomPopup::getVersion() == "1.7") {
+                if (CustomPopup::getVersion() == "1.7") {
                     $this->unregisterHook('displayCustomerAccount');
                 } else {
                     $this->unregisterHook('displayMyAccountBlockfooter');
