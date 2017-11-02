@@ -14,13 +14,26 @@
 {literal}
     <script>
         $(function() {
-
             {/literal}{if $popup_delay > 0}{literal}
             setTimeout(function(){
             {/literal}{/if}{literal}
                 var popup = new $.Popup();
                 if ($.cookie('responsive_popup') == null) {
                     popup.open('#inline');
+                    {/literal}{if $version == "1.7"}{literal}
+                        $.ajax({
+                            url: "{/literal}{$base_dir_ssl}{literal}modules/custompopup/ajax/get_content.php",
+                            type: "post",
+                            data: {
+                            },
+                            success: function (response) {
+                                $(".popup_content").html(response);
+                                $(window).trigger('resize');
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                            }
+                        });
+                    {/literal}{/if}{literal}
                 }
             {/literal}{if $popup_delay > 0}{literal}
             },  {/literal}{$popup_delay*1000}{literal});
@@ -67,5 +80,5 @@
 
 
 <div id="inline" style="display:none">
-       {$content_{$cookie->id_lang}}
+    {$content_{Context::getContext()->language->id}}
 </div>

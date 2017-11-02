@@ -1172,6 +1172,12 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
         $this->context->controller->addJS($this->_path.'views/js/jquery.cookie.js', 'all');
         $this->context->controller->addJS($this->_path.'views/js/jquery.popup.min.js', 'all');
         $this->context->controller->addCSS($this->_path.'views/css/popup.css', 'all');
+
+        $this->context->smarty->assign(array(
+            'jq' => $this->_path.'views/js/jq.js'
+        ));
+
+        return $this->display(__FILE__, 'header.tpl');
     }
 
     protected function existsInDb()
@@ -1296,7 +1302,13 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             'button_hover_color' => Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR'),
             'button_size' => Configuration::get('CUSTOMPOPUP_BUTTON_SIZE'),
             'button_top_padding' => Configuration::get('CUSTOMPOPUP_BUTTON_TOP_PADDING'),
-            'button_position' => Configuration::get('CUSTOMPOPUP_BUTTON_POSITION')
+            'button_position' => Configuration::get('CUSTOMPOPUP_BUTTON_POSITION'),
+            'version' => CustomPopup::getVersion()
         );
+    }
+
+    static function getVersion()
+    {
+        return substr(_PS_VERSION_, 0, 3);
     }
 }
