@@ -487,7 +487,6 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 return $this->displayError($newLineErrors);
             }
 
-
             $this->_clearCache('custompopup.tpl');
             return $this->displayConfirmation($this->l('The settings have been updated.'));
         }
@@ -1041,15 +1040,28 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             $this->unregisterHook('displayFooterProduct');
             $this->unregisterHook('displayCarrierList');
 
+            if(CustomPopup::getVersion() == "1.7") {
+                $this->unregisterHook('displayCustomerAccount');
+                $this->unregisterHook('displayAfterCarrier');
+            }
+
             if (self::checkEnable('Homepage')) {
                 $this->registerHook('home');
             } else {
                 $this->unregisterHook('home');
             }
             if (self::checkEnable('MyAccount')) {
-                $this->registerHook('displayMyAccountBlockfooter');
+                if(CustomPopup::getVersion() == "1.7") {
+                    $this->registerHook('displayCustomerAccount');
+                } else {
+                    $this->registerHook('displayMyAccountBlockfooter');
+                }
             } else {
-                $this->unregisterHook('displayMyAccountBlockfooter');
+                if(CustomPopup::getVersion() == "1.7") {
+                    $this->unregisterHook('displayCustomerAccount');
+                } else {
+                    $this->unregisterHook('displayMyAccountBlockfooter');
+                }
             }
             if (self::checkEnable('Payment')) {
                 $this->registerHook('displayPaymentTop');
@@ -1077,14 +1089,26 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 $this->unregisterHook('displayFooterProduct');
             }
             if (self::checkEnable('CarrierList')) {
-                $this->registerHook('displayCarrierList');
+                if(CustomPopup::getVersion() == "1.7") {
+                    $this->registerHook('displayAfterCarrier');
+                } else {
+                    $this->registerHook('displayCarrierList');
+                }
             } else {
-                $this->unregisterHook('displayCarrierList');
+                if(CustomPopup::getVersion() == "1.7") {
+                    $this->unregisterHook('displayAfterCarrier');
+                } else {
+                    $this->unregisterHook('displayCarrierList');
+                }
             }
         } else {
             if ($fields['mainselect'] == 1 || Configuration::get('CUSTOMPOPUP_MAINSELECT') == 1) {
                 $this->registerHook('home');
-                $this->unregisterHook('displayMyAccountBlockfooter');
+                if(CustomPopup::getVersion() == "1.7") {
+                    $this->unregisterHook('displayCustomerAccount');
+                } else {
+                    $this->unregisterHook('displayMyAccountBlockfooter');
+                }
                 $this->unregisterHook('displayPaymentTop');
                 $this->unregisterHook('displayCustomerAccountForm');
                 $this->unregisterHook('displayOrderConfirmation');
@@ -1095,7 +1119,11 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             if ($fields['mainselect'] == 2 || Configuration::get('CUSTOMPOPUP_MAINSELECT') == 2) {
                 $this->registerHook('displayFooter');
                 $this->unregisterHook('home');
-                $this->unregisterHook('displayMyAccountBlockfooter');
+                if(CustomPopup::getVersion() == "1.7") {
+                    $this->unregisterHook('displayCustomerAccount');
+                } else {
+                    $this->unregisterHook('displayMyAccountBlockfooter');
+                }
                 $this->unregisterHook('displayPaymentTop');
                 $this->unregisterHook('displayCustomerAccountForm');
                 $this->unregisterHook('displayOrderConfirmation');
@@ -1123,7 +1151,22 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
         return $this->functionHook();
     }
 
+    public function hookDisplayMyAccountBlock($params)
+    {
+        return $this->functionHook();
+    }
+
     public function hookDisplayPaymentTop($params)
+    {
+        return $this->functionHook();
+    }
+
+    public function hookDisplayAfterCarrier($params)
+    {
+        return $this->functionHook();
+    }
+
+    public function hookDisplayCustomerAccount($params)
     {
         return $this->functionHook();
     }
@@ -1304,12 +1347,21 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
             'button_size' => Configuration::get('CUSTOMPOPUP_BUTTON_SIZE'),
             'button_top_padding' => Configuration::get('CUSTOMPOPUP_BUTTON_TOP_PADDING'),
             'button_position' => Configuration::get('CUSTOMPOPUP_BUTTON_POSITION'),
-            'version' => CustomPopup::getVersion()
+            'version' => CustomPopup::getVersion(),
+            'ajaxpath' => CustomPopup::modulePath().'ajax/get_content.php',
         );
     }
 
     public static function getVersion()
     {
         return Tools::substr(_PS_VERSION_, 0, 3);
+    }
+
+    public static function modulePath()
+    {
+        Configuration::get("PS_SSL_ENABLED") ? $protocol = "https://" : $protocol = "http://";
+        $domainName = $_SERVER['SERVER_NAME'];
+
+        return $protocol.$domainName.__PS_BASE_URI__.'modules/custompopup/';
     }
 }

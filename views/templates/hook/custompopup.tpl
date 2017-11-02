@@ -22,7 +22,7 @@
                     popup.open('#inline');
                     {/literal}{if $version == "1.7"}{literal}
                         $.ajax({
-                            url: "{/literal}{$base_dir_ssl}{literal}modules/custompopup/ajax/get_content.php",
+                            url: "{/literal}{$ajaxpath}{literal}",
                             type: "post",
                             data: {
                             },
