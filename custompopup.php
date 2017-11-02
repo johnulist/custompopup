@@ -378,11 +378,12 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 $langContent[$la['id_lang']] = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$la['id_lang']);
             }
 
-            foreach ($languages as $lang)
-            {
-                $Validation->validate($this->l('Popup content'),Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),array(
-                    'notempty' => 1,
-                ));
+            foreach ($languages as $lang) {
+                $Validation->validate(
+                    $this->l('Popup content'),
+                    Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),
+                    array('notempty' => 1)
+                );
             }
 
             // if no errors occured
@@ -1307,8 +1308,8 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
         );
     }
 
-    static function getVersion()
+    public static function getVersion()
     {
-        return substr(_PS_VERSION_, 0, 3);
+        return Tools::substr(_PS_VERSION_, 0, 3);
     }
 }
