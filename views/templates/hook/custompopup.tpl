@@ -21,18 +21,18 @@
                 if ($.cookie('responsive_popup') == null) {
                     popup.open('#inline');
                     {/literal}{if $version == "1.7"}{literal}
-                    $.ajax({
-                        url: "{/literal}{$ajaxpath}{literal}",
-                        type: "post",
-                        data: {
-                        },
-                        success: function (response) {
-                            $(".popup_content").html(response);
-                            $(window).trigger('resize');
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                        }
-                    });
+                        $.ajax({
+                            url: "{/literal}{$ajaxpath}{literal}",
+                            type: "post",
+                            data: {
+                            },
+                            success: function (response) {
+                                $(".popup_content").html(response);
+                                $(window).trigger('resize');
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                            }
+                        });
                     {/literal}{/if}{literal}
                 }
                 {/literal}{if $popup_delay > 0}{literal}
@@ -80,5 +80,5 @@
 
 
 <div id="inline" style="display:none">
-       {$content_{$cookie->id_lang}}
+    {$content_{Context::getContext()->language->id}}
 </div>

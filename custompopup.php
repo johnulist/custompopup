@@ -378,11 +378,12 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                 $langContent[$la['id_lang']] = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$la['id_lang']);
             }
 
-            foreach ($languages as $lang)
-            {
-                $Validation->validate($this->l('Popup content'),Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),array(
-                    'notempty' => 1,
-                ));
+            foreach ($languages as $lang) {
+                $Validation->validate(
+                    $this->l('Popup content'),
+                    Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),
+                    array('notempty' => 1)
+                );
             }
 
             // if no errors occured
@@ -485,7 +486,6 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
 
                 return $this->displayError($newLineErrors);
             }
-
 
             $this->_clearCache('custompopup.tpl');
             return $this->displayConfirmation($this->l('The settings have been updated.'));

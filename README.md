@@ -5,7 +5,7 @@
 | PS compatibility       | Tested?            |    Ok?                |
 | ---------------------- |:------------------:| ---------------------:|
 | 1.6                    | :heavy_check_mark: |    :heavy_check_mark: |
-| 1.7                    | :x:                |    :x:                |
+| 1.7                    | :heavy_check_mark: |   :heavy_check_mark:  |
 
 This module displays a popup with Your content on chosen pages.
 <br />
