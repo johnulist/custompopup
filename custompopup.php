@@ -7,8 +7,7 @@
  * Visit my website (http://prestacraft.com) for future updates, new articles and other awesome modules.
  *
  * @author     PrestaCraft
- * @copyright  2015-2017 PrestaCraft
- * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @copyright  PrestaCraft
  */
 
 if (!defined('_PS_VERSION_')) {
@@ -24,7 +23,7 @@ class CustomPopup extends Module
     {
         $this->name = 'custompopup';
         $this->tab = 'front_office_features';
-        $this->version = '1.1.0';
+        $this->version = '1.2.0';
         $this->author = 'PrestaCraft';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = array('min' => '1.6', 'max' => _PS_VERSION_);
@@ -300,6 +299,8 @@ class CustomPopup extends Module
 
     public function displayTabs()
     {
+        $data = file_get_contents('http://prestacraft.com/free-modules/version_checker.php?module='.$this->name.'&version='.$this->version.'');
+
         return
             '<script src="../modules/custompopup/views/js/remember_tab.js"></script>
         <div role="tabpanel">
@@ -316,8 +317,11 @@ class CustomPopup extends Module
                 <li role="presentation"><a href="#display" aria-controls="profile" role="tab" 
                 data-toggle="tab"><i class="icon-eye-open"></i>&nbsp;&nbsp;&nbsp;'.$this->l('Display on pages').'</a>
                 </li>
+                      <li role="presentation"><a href="#version" aria-controls="profile" role="tab" 
+                data-toggle="tab"><i class="icon-refresh"></i>&nbsp;&nbsp;&nbsp;'.$this->l('Version checker').'</a></li>
                 <li role="presentation"><a href="#about" aria-controls="profile" role="tab" 
                 data-toggle="tab"><i class="icon-info-circle"></i>&nbsp;&nbsp;&nbsp;'.$this->l('About').'</a></li>
+          
             </ul>
 
         <!-- Tab panes -->
@@ -342,11 +346,16 @@ class CustomPopup extends Module
 border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
 <img alt="" border="0" src="https://www.paypalobjects.com/pl_PL/i/scr/pixel.gif" width="1" height="1">
 </form>
-
+        </div>
+        
+        <div role="tabpanel" class="tab-pane panel" id="version">
+                <h3>'.$this->l('Version checker').'</h3>
+        '.$data.'
+   </div>
+        </div>
         </div>
 
-        </div>
-        </div>';
+        ';
     }
 
 
@@ -684,6 +693,7 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
                         'required' => true,
                         'cols' => 40,
                         'rows' => 10,
+                        'desc' => '<strong>'.$this->l('REMEMBER TO FILL CONTENT FOR ALL LANGUAGES BEFORE SAVING').'</strong>',
                     )
                 ),
                 'submit' => array(
@@ -1217,9 +1227,11 @@ border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
         $this->context->controller->addJS($this->_path.'views/js/jquery.popup.min.js', 'all');
         $this->context->controller->addCSS($this->_path.'views/css/popup.css', 'all');
 
-        $this->context->smarty->assign(array(
-            'jq' => $this->_path.'views/js/jq.js'
-        ));
+        if (CustomPopup::getVersion() != "1.6") {
+            $this->context->smarty->assign(array(
+                'jq' => $this->_path.'views/js/jq.js'
+            ));
+        }
 
         return $this->display(__FILE__, 'header.tpl');
     }

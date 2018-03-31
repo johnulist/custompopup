@@ -6,8 +6,7 @@
  * Visit my website (http://prestacraft.com) for future updates, new articles and other awesome modules.
  *
  * @author     PrestaCraft
- * @copyright  2015-2017 PrestaCraft
- * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @copyright  PrestaCraft
 *}
 
 <script type="text/javascript" src="{$jq}" ></script>

@@ -6,19 +6,24 @@
  * Visit my website (http://prestacraft.com) for future updates, new articles and other awesome modules.
  *
  * @author     PrestaCraft
- * @copyright  2015-2017 PrestaCraft
- * @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ * @copyright  PrestaCraft
 *}
 
 {if $popup_enabled}
 {literal}
     <script>
         $(function() {
+            if (Cookies.get('responsive_popup') != 'yes') {
+
             {/literal}{if $popup_delay > 0}{literal}
             setTimeout(function(){
                 {/literal}{/if}{literal}
-                var popup = new $.Popup();
-                if ($.cookie('responsive_popup') == null) {
+                var popup = new $.Popup({
+                    afterClose: function(){
+                        Cookies.set('responsive_popup', 'yes', { expires: {/literal}{$popup_cookie*0.000694}{literal}, path: '/' });
+                    }
+                });
+
                     popup.open('#inline');
                     {/literal}{if $version == "1.7"}{literal}
                         $.ajax({
@@ -34,14 +39,13 @@
                             }
                         });
                     {/literal}{/if}{literal}
-                }
+
+
                 {/literal}{if $popup_delay > 0}{literal}
             },  {/literal}{$popup_delay*1000}{literal});
             {/literal}{/if}{literal}
 
-            $(".popup_close").click(function(){
-                $.cookie('responsive_popup', 'yes', { expires: {/literal}{$popup_cookie*0.000694}{literal}, path: '/' });
-            });
+            }
 
             var instances = $('.popup').length;
             if(instances > 1)
