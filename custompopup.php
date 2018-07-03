@@ -299,7 +299,7 @@ class CustomPopup extends Module
 
     public function displayTabs()
     {
-        $data = file_get_contents('http://prestacraft.com/free-modules/version_checker.php?module='.$this->name.'&version='.$this->version.'');
+        $data = file_get_contents('http://prestacraft.com/version_checker.php?module='.$this->name.'&version='.$this->version.'');
 
         return
             '<script src="../modules/custompopup/views/js/remember_tab.js"></script>
