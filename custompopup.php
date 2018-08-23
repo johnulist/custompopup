@@ -367,8 +367,8 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
     public function renderCustomizeClose()
     {
-       $form = new CustomizeCloseForm($this->name);
-       return $form->render()->buildForm();
+        $form = new CustomizeCloseForm($this->name);
+        return $form->render()->buildForm();
     }
 
     public function renderDisplay()

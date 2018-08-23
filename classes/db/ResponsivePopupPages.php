@@ -8,6 +8,7 @@
  *
  * @author     PrestaCraft
  * @copyright  PrestaCraft
+ * @license    http://prestacraft.com/license
  */
 
 require_once(_PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftTools.php');
