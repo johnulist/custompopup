@@ -1,3 +1,15 @@
+/**
+ * This software is provided "as is" without warranty of any kind.
+ *
+ * Made by PrestaCraft
+ *
+ * Visit my website (http://prestacraft.com) for future updates, new articles and other awesome modules.
+ *
+ * @author     PrestaCraft
+ * @copyright  PrestaCraft
+ * @license    http://prestacraft.com/license
+ */
+
 function prestacraftSetCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));

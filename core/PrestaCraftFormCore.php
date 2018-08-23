@@ -8,6 +8,7 @@
  *
  * @author     PrestaCraft
  * @copyright  PrestaCraft
+ * @license    http://prestacraft.com/license
  */
 
 require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormInterface.php';
@@ -18,7 +19,7 @@ abstract class PrestaCraftFormCore implements PrestaCraftFormInterface
     protected $fields;
     protected $className;
 
-    function __construct($moduleName, $className)
+    public function __construct($moduleName, $className)
     {
         if (!$moduleName) {
             throw new \Exception("[PrestaCraft Exception] Missing module name");

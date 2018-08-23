@@ -8,6 +8,7 @@
  *
  * @author     PrestaCraft
  * @copyright  PrestaCraft
+ * @license    http://prestacraft.com/license
  */
 
 if (!defined('_PS_VERSION_') || !defined('_PS_MODULE_DIR_')) {
@@ -86,7 +87,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     {
         if (Tools::getValue('configure') == $this->name) {
             $this->context->controller->addCSS($this->_path.'views/css/back.css');
-            $this->context->controller->addJS($this->_path.'views/js/remember_tab.js');
         }
     }
 

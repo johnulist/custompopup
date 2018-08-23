@@ -8,6 +8,7 @@
  *
  * @author     PrestaCraft
  * @copyright  PrestaCraft
+ * @license    http://prestacraft.com/license
  */
 
 /**
