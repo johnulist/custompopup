@@ -37,7 +37,7 @@
         </ul>
 
         <div class="pc-checker">
-            {$VERSION_CHECKER nofilter}
+            {$VERSION_CHECKER}
         </div>
 
         <div class="pc-info">

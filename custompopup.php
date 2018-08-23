@@ -71,6 +71,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             ResponsivePopupPages::fixtures() &&
             $this->registerHook('home') &&
             $this->registerHook('backOfficeHeader') &&
+            $this->registerHook('displayFooter') &&
             $this->registerHook('header');
     }
 
