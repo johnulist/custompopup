@@ -9,13 +9,13 @@
  * @copyright  PrestaCraft
 *}
 
-<script src="{$colorpicker_path|escape:'html_all'}"></script>
+<script src="{$colorpicker_path}"></script>
 
 <div role="tabpanel" class="prestacraft">
     <!-- Nav tabs -->
     <div class="col-lg-3 col-md-4 col-xs-12 prestacraft-left">
         <div class="logo-container">
-            <img src="{$module_dir|escape:'html_all'}/views/img/pc_logo.png" class="pc-logo">
+            <img src="{$module_dir}/views/img/pc_logo.png" class="pc-logo">
         </div>
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">
@@ -50,14 +50,14 @@
     <div class="col-md-8 col-lg-9 col-xs-12">
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="settings">{$TAB_SETTINGS nofilter}</div>
+            <div role="tabpanel" class="tab-pane active" id="settings">{$TAB_SETTINGS}</div>
             <div role="tabpanel" class="tab-pane" id="customizestyle">
                 <div class="row">
-                <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_STYLE nofilter}</div>
-                <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_CLOSE nofilter}</div>
+                <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_STYLE}</div>
+                <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_CLOSE}</div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="display">{$TAB_DISPLAY nofilter}</div>
+            <div role="tabpanel" class="tab-pane" id="display">{$TAB_DISPLAY}</div>
         </div>
     </div>
 </div>

@@ -94,13 +94,17 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     {
         $this->postProcess();
 
-        $data = Tools::file_get_contents('http://prestacraft.com/version_checker.php?module='.$this->name.'&version='.$this->version.'');
+        $data = Tools::file_get_contents(
+            'http://prestacraft.com/version_checker.php?module='.$this->name.'&version='.$this->version.''
+        );
         $this->context->smarty->assign('module_dir', $this->_path);
         $this->context->smarty->assign('colorpicker_path', __PS_BASE_URI__.'js/jquery/plugins/jquery.colorpicker.js');
         $this->context->smarty->assign('CUSTOMPOPUP_COLOR', Configuration::get('CUSTOMPOPUP_COLOR'));
         $this->context->smarty->assign('CUSTOMPOPUP_BACK_COLOR', Configuration::get('CUSTOMPOPUP_BACK_COLOR'));
         $this->context->smarty->assign('CUSTOMPOPUP_BUTTON_COLOR', Configuration::get('CUSTOMPOPUP_BUTTON_COLOR'));
-        $this->context->smarty->assign('CUSTOMPOPUP_BUTTON_HOVER_COLOR', Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR'));
+        $this->context->smarty->assign(
+            'CUSTOMPOPUP_BUTTON_HOVER_COLOR', Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR')
+        );
         $this->context->smarty->assign('VERSION_CHECKER', $data);
         $this->context->smarty->assign('POS', trim(Tools::getValue('pos')));
 
@@ -112,7 +116,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
 
         return $output.$this->postProcess();
-
     }
 
     public function postProcess()
@@ -442,7 +445,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $langContent = array();
 
         foreach ($this->getContentForLanguages() as $langID => $content) {
-            $langContent['content_'.$langID] = trim(json_encode($content),'"');
+            $langContent['content_'.$langID] = trim(json_encode($content), '"');
         }
 
         $assign = PrestaCraftTools::getTemplateVars();
@@ -488,8 +491,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         return $this->display(__FILE__, 'header.tpl');
     }
 
-
-
     private static function updatePage($field, $value)
     {
         Db::getInstance()->update(
@@ -498,5 +499,4 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             'id_page="'.$field.'";'
         );
     }
-
 }

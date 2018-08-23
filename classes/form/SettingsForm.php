@@ -72,7 +72,9 @@ class SettingsForm extends PrestaCraftFormCore
                         'required' => true,
                         'cols' => 40,
                         'rows' => 10,
-                        'desc' => '<strong>'.$this->module->l('REMEMBER TO FILL CONTENT FOR ALL LANGUAGES BEFORE SAVING').'</strong>',
+                        'desc' => '<strong>'.$this->module->l(
+                            'REMEMBER TO FILL CONTENT FOR ALL LANGUAGES BEFORE SAVING'
+                            ).'</strong>',
                     )
                 ),
                 'submit' => array(
