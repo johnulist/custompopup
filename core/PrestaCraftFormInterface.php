@@ -1,4 +1,5 @@
-{*
+<?php
+/**
  * This software is provided "as is" without warranty of any kind.
  *
  * Made by PrestaCraft
@@ -7,7 +8,13 @@
  *
  * @author     PrestaCraft
  * @copyright  PrestaCraft
-*}
+ */
 
-<script type="text/javascript" src="{$prestacraft_cookie}"></script>
-<script type="text/javascript" src="{$tingle}"></script>
+interface PrestaCraftFormInterface
+{
+    public function render();
+
+    public function getFieldsValues();
+
+    public function buildForm();
+}

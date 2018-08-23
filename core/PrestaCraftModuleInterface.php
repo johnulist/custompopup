@@ -10,9 +10,18 @@
  * @copyright  PrestaCraft
  */
 
-require_once('../../../config/config.inc.php');
+/**
+ * Minimum for each PrestaCraft module.
+ *
+ * Interface PrestacraftModuleInterface
+ */
+interface PrestacraftModuleInterface
+{
+    public function install();
 
-$id_lang = Context::getContext()->language->id;
+    public function uninstall();
 
-echo Db::getInstance()->getValue('SELECT `content` FROM '._DB_PREFIX_.'responsive_popup 
-WHERE id_lang='.(int)$id_lang.'');
+    public function getContent();
+
+    public function postProcess();
+}

@@ -10,52 +10,58 @@
 *}
 
 {if $popup_enabled}
-{literal}
-    <script>
-        $(function() {
-            if (Cookies.get('responsive_popup') != 'yes') {
-
-            {/literal}{if $popup_delay > 0}{literal}
-            setTimeout(function(){
-                {/literal}{/if}{literal}
-                var popup = new $.Popup({
-                    afterClose: function(){
-                        Cookies.set('responsive_popup', 'yes', { expires: {/literal}{$popup_cookie*0.000694}{literal}, path: '/' });
-                    }
-                });
-
-                    popup.open('#inline');
-                    {/literal}{if $version == "1.7"}{literal}
-                        $.ajax({
-                            url: "{/literal}{$ajaxpath}{literal}",
-                            type: "post",
-                            data: {
-                            },
-                            success: function (response) {
-                                $(".popup_content").html(response);
-                                $(window).trigger('resize');
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                            }
-                        });
-                    {/literal}{/if}{literal}
-
-
-                {/literal}{if $popup_delay > 0}{literal}
-            },  {/literal}{$popup_delay*1000}{literal});
+    {literal}
+        <script>
+            {/literal}{if !$popup_cookie && $popup_cookie == 0}{literal}
+                prestacraftDeleteCookie('responsive_popup');
             {/literal}{/if}{literal}
 
-            }
+            if (prestacraftGetCookie('responsive_popup') != 'yes') {
 
-            var instances = $('.popup').length;
-            if(instances > 1)
-            {
-                $( ".popup" ).last().remove();
-                $( ".popup_back" ).last().remove();
-                $( ".popup_close" ).last().remove();
+                {/literal}{if $popup_delay > 0}{literal}
+                setTimeout(function(){
+                {/literal}{/if}{literal}
+                    var modal = new tingle.modal({
+                        footer: true,
+                        stickyFooter: false,
+                        closeMethods: ['button'],
+                        closeLabel: "Close",
+                        cssClass: ['custom-class-1', 'custom-class-2'],
+                        onOpen: function() {
+                        },
+                        onClose: function() {
+                            {/literal}{if $popup_cookie && $popup_cookie > 0}{literal}
+                            prestacraftSetCookie('responsive_popup', 'yes', {/literal}{$popup_cookie*0.000694}{literal});
+                            {/literal}{/if}{literal}
+                        },
+                        beforeClose: function() {
+                            return true; // close the modal
+                            return false; // nothing happens
+                        }
+                    });
+
+                    var content = '{/literal}{$content_{Context::getContext()->language->id}|unescape: "html" nofilter}{literal}';
+                    // set content
+                    modal.setContent(content);
+
+                    // add a button
+                    modal.addFooterBtn('x', 'prestacraft-close', function() {
+                        modal.close();
+                    });
+
+                    // add another button
+                    modal.addFooterBtn('Dangerous action !', 'tingle-btn tingle-btn--danger', function() {
+                        modal.close();
+                    });
+
+                    modal.open();
+                    {/literal}{if $popup_delay > 0}{literal}
+                },  {/literal}{$popup_delay*1000}{literal});
+                {/literal}{/if}{literal}
+
             }
-        });
-    </script>{/literal}
+        </script>
+    {/literal}
 {/if}
 {literal}<style>
         div.popup {
@@ -63,10 +69,7 @@
             padding:{/literal} {$padding}{literal}px;
             padding-top:{/literal} {$top_padding}{literal}px;
         }
-        div.popup img {
-            max-width: 100%;
-            height: auto;
-        }
+
         .popup_back {
             background-color: {/literal}{$back_color}{literal};
         }
@@ -84,5 +87,5 @@
 
 
 <div id="inline" style="display:none">
-    {$content_{Context::getContext()->language->id}}
+
 </div>

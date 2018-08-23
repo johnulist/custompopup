@@ -1,0 +1,64 @@
+.leftfix {
+    margin-left: 10px;
+}
+
+.prestacraft .nav-tabs>li {
+    float: none;
+}
+
+.prestacraft .nav-tabs>li.active>a, .prestacraft .nav-tabs>li.active>a:hover, .prestacraft .nav-tabs>li.active>a:focus {
+    border: 1px solid #31A1C5 !important;
+    border-radius: 0 !important;
+    text-align: center;
+}
+
+.prestacraft a {
+    color: #31A1C5 !important;
+    text-align: center;
+}
+
+.prestacraft .nav {
+    background: #fff;
+    padding:5px 3px 5px 5px;
+}
+
+.prestacraft .panel {
+    border-radius: 0 !important;
+}
+
+.prestacraft-left {
+    widthh: 100%;
+}
+
+.prestacraft .logo-container {
+    width: 100%;
+    background: #fff;
+    text-align: center;
+}
+
+
+.prestacraft-left .pc-logo {
+    max-width: 100% !important;
+    margin-top: 6px;
+    border-bottom: 1px solid #31A1C5;
+    margin-bottom: 15px;
+}
+
+.prestacraft-left .pc-checker img {
+    max-width: 100% !important;
+}
+
+.pc-info {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pc-checker {
+    background: #fff;
+    width: 100%;
+    text-align: center;
+}
+
+.mColorPicker {
+    width: 70px !important;
+}
