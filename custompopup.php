@@ -103,7 +103,8 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $this->context->smarty->assign('CUSTOMPOPUP_BACK_COLOR', Configuration::get('CUSTOMPOPUP_BACK_COLOR'));
         $this->context->smarty->assign('CUSTOMPOPUP_BUTTON_COLOR', Configuration::get('CUSTOMPOPUP_BUTTON_COLOR'));
         $this->context->smarty->assign(
-            'CUSTOMPOPUP_BUTTON_HOVER_COLOR', Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR')
+            'CUSTOMPOPUP_BUTTON_HOVER_COLOR',
+            Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR')
         );
         $this->context->smarty->assign('VERSION_CHECKER', $data);
         $this->context->smarty->assign('POS', trim(Tools::getValue('pos')));

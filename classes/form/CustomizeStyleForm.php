@@ -63,7 +63,6 @@ class CustomizeStyleForm extends PrestaCraftFormCore
         );
 
         return $this;
-
     }
 
     public function getFieldsValues()

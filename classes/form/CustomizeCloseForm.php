@@ -79,7 +79,6 @@ class CustomizeCloseForm extends PrestaCraftFormCore
         );
 
         return $this;
-
     }
 
     public function getFieldsValues()
