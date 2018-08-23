@@ -34,9 +34,9 @@ abstract class PrestaCraftFormCore implements PrestaCraftFormInterface
         $this->className = $className;
     }
 
-    abstract function render();
+    public abstract function render();
 
-    abstract function getFieldsValues();
+    public abstract function getFieldsValues();
 
     public function buildForm()
     {

@@ -14,12 +14,12 @@ require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormCore.php';
 
 class CustomizeCloseForm extends PrestaCraftFormCore
 {
-    function __construct($name)
+    public function __construct($name)
     {
         parent::__construct($name, __CLASS__);
     }
-    
-    function render()
+
+    public function render()
     {
         $this->fields = array(
             'form' => array(

@@ -94,7 +94,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     {
         $this->postProcess();
 
-        $data = file_get_contents('http://prestacraft.com/version_checker.php?module='.$this->name.'&version='.$this->version.'');
+        $data = Tools::file_get_contents('http://prestacraft.com/version_checker.php?module='.$this->name.'&version='.$this->version.'');
         $this->context->smarty->assign('module_dir', $this->_path);
         $this->context->smarty->assign('colorpicker_path', __PS_BASE_URI__.'js/jquery/plugins/jquery.colorpicker.js');
         $this->context->smarty->assign('CUSTOMPOPUP_COLOR', Configuration::get('CUSTOMPOPUP_COLOR'));

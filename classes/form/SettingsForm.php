@@ -14,13 +14,12 @@ require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormCore.php';
 
 class SettingsForm extends PrestaCraftFormCore
 {
-
-    function __construct($moduleName)
+    public function __construct($moduleName)
     {
         parent::__construct($moduleName, __CLASS__);
     }
 
-    function render()
+    public function render()
     {
         $this->fields = array(
             'form' => array(

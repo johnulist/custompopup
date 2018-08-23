@@ -15,7 +15,7 @@
     <!-- Nav tabs -->
     <div class="col-lg-3 col-md-4 col-xs-12 prestacraft-left">
         <div class="logo-container">
-            <img src="{$module_dir}/pc_logo.png" class="pc-logo">
+            <img src="{$module_dir}/views/img/pc_logo.png" class="pc-logo">
         </div>
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active">

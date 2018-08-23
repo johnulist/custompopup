@@ -15,15 +15,15 @@ require_once _PS_MODULE_DIR_.'custompopup/classes/db/ResponsivePopupPages.php';
 
 class DisplayForm extends PrestaCraftFormCore
 {
-
-    function __construct($moduleName)
+    public function __construct($moduleName)
     {
         parent::__construct($moduleName, __CLASS__);
     }
 
-    function render()
+    public function render()
     {
         $rpp = new ResponsivePopupPages();
+        $pages = array();
 
         foreach ($rpp->getAll(true) as $item) {
             $pages[$item['id_page']] = array(
