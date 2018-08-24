@@ -27,12 +27,18 @@ require_once _PS_MODULE_DIR_.'custompopup/classes/form/CustomizeCloseForm.php';
 require_once _PS_MODULE_DIR_.'custompopup/classes/form/CustomizeStyleForm.php';
 require_once _PS_MODULE_DIR_.'custompopup/classes/form/DisplayForm.php';
 require_once _PS_MODULE_DIR_.'custompopup/classes/form/SettingsForm.php';
+// Validators
+require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/SettingsFormValidator.php';
 
 // Utils
 require_once _PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftTools.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftVariables.php';
 
 class CustomPopup extends Module implements PrestaCraftModuleInterface
 {
+    private $errors;
+    private $success = false;
+
     public function __construct()
     {
         $this->name = 'custompopup';
@@ -63,7 +69,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             Configuration::updateValue($content, $lang['name']);
         }
 
-        PrestaCraftTools::setDefaultValues();
+        PrestaCraftVariables::setDefaultValues();
 
         return parent::install() &&
             ResponsivePopup::createTable() &&
@@ -115,79 +121,45 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $this->context->smarty->assign('TAB_CUSTOMIZE_CLOSE', $this->renderCustomizeClose());
         $this->context->smarty->assign('TAB_DISPLAY', $this->renderDisplay());
 
+        if ($this->errors) {
+            $this->context->smarty->assign('errors', $this->errors);
+        }
+
+        if ($this->success) {
+            $this->context->smarty->assign('success', $this->l('The settings have been updated.'));
+        }
+
         $output = $this->context->smarty->fetch($this->local_path.'views/templates/admin/configure.tpl');
 
-        return $output.$this->postProcess();
+        return $output;
     }
 
     public function postProcess()
     {
-        require_once('classes/utils/Validation.php');
+        $settingsFormData = array(
+            'CUSTOMPOPUP_ENABLED' => Tools::getValue('CUSTOMPOPUP_ENABLED'),
+            'CUSTOMPOPUP_COOKIE' => Tools::getValue('CUSTOMPOPUP_COOKIE'),
+            'CUSTOMPOPUP_DELAY' => Tools::getValue('CUSTOMPOPUP_DELAY'),
+        );
 
-        $Validation = new Validation();
+        $langContent = array();
 
-        if (Tools::isSubmit('SettingsForm')) {
-            Configuration::updateValue('CUSTOMPOPUP_ENABLED', Tools::getValue('CUSTOMPOPUP_ENABLED'));
-            $languages = Language::getLanguages(true);
+        foreach (Language::getLanguages(true) as $la) {
+            $langContent['CUSTOMPOPUP_CONTENT_'.$la['id_lang']] = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$la['id_lang']);
+        }
 
-            $Validation->validate(
-                $this->l('Cookie length'),
-                Tools::getValue('CUSTOMPOPUP_COOKIE'),
-                array('isnumber' => 1)
-            );
+        $settingsFormDataAll = array_merge($settingsFormData, $langContent);
 
-            $Validation->validate(
-                $this->l('Cookie length'),
-                Tools::getValue('CUSTOMPOPUP_DELAY'),
-                array('isnumber' => 1)
-            );
+        $settingsFormValidator = new SettingsFormValidator($this, 'SettingsForm');
+        $settingsFormValidator->setData($settingsFormDataAll);
+        $settingsFormValidator->validate();
 
-            $langContent = array();
+        if ($settingsFormValidator->getErrors()) {
+            $this->errors = $settingsFormValidator->getErrors();
+        }
 
-            foreach ($languages as $la) {
-                $langContent[$la['id_lang']] = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$la['id_lang']);
-            }
-
-            foreach ($languages as $lang) {
-                $Validation->validate(
-                    $this->l('Popup content'),
-                    Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),
-                    array('notempty' => 1)
-                );
-            }
-
-            // if no errors occured
-            if (!$Validation->getError($this->l('Popup content'))) {
-                Db::getInstance()->execute('TRUNCATE TABLE `' . _DB_PREFIX_ . 'responsive_popup`');
-
-                foreach ($languages as $lang) {
-                    $popup = new ResponsivePopup();
-                    $popup->id_shop = $this->context->shop->id;
-                    $popup->id_lang = $lang['id_lang'];
-                    $popup->content = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']);
-                    $popup->save();
-                }
-            }
-
-            if ($Validation->getAllErrors()) {
-                $errors = array();
-
-                foreach ($Validation->getAllErrors() as $value) {
-                    foreach ($value as $val) {
-                        $errors[]=$val;
-                    }
-                }
-
-                $newLineErrors = implode("<br>", $errors);
-
-                return $this->displayError($newLineErrors);
-            }
-
-            Configuration::updateValue('CUSTOMPOPUP_COOKIE', Tools::getValue('CUSTOMPOPUP_COOKIE'));
-            Configuration::updateValue('CUSTOMPOPUP_DELAY', Tools::getValue('CUSTOMPOPUP_DELAY'));
-
-            $this->_clearCache('custompopup.tpl');
-            return $this->displayConfirmation($this->l('The settings have been updated.'));
+        if ($settingsFormValidator->getSuccess()) {
+            $this->success = true;
         }
 
         if (Tools::isSubmit('CustomizeStyleForm')) {
@@ -450,7 +422,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             $langContent['content_'.$langID] = trim(json_encode($content), '"');
         }
 
-        $assign = PrestaCraftTools::getTemplateVars();
+        $assign = PrestaCraftVariables::getTemplateVars();
         $all = array_merge($langContent, $assign);
         $this->context->smarty->assign($all);
 

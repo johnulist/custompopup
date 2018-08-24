@@ -11,20 +11,26 @@
  * @license    http://prestacraft.com/license
  */
 
-class Validation extends CustomPopup
+class Validation
 {
-    private $errors = array();
+    protected $module;
+    protected $errors;
+    
+    public function __construct($moduleObject)
+    {
+        $this->module = $moduleObject;
+    }
 
     public function validate($name, $field, $rules = array())
     {
         foreach ($rules as $key => $value) {
             switch ($key) {
                 case 'notempty':
-                    if (!$field || trim(Tools::strlen($field))<1) {
+                    if (!$field || trim(Tools::strlen($field)) < 1) {
                         $this->setError(
                             $name,
                             sprintf(
-                                $this->l("%s - can not be empty."),
+                                $this->module->l("%s - can not be empty."),
                                 $name
                             )
                         );
@@ -36,7 +42,7 @@ class Validation extends CustomPopup
                         $this->setError(
                             $name,
                             sprintf(
-                                $this->l("%s - value '%s' is too long. Maximum is %s characters."),
+                                $this->module->l("%s - value '%s' is too long. Maximum is %s characters."),
                                 $name,
                                 $field,
                                 $value
@@ -50,7 +56,7 @@ class Validation extends CustomPopup
                         $this->setError(
                             $name,
                             sprintf(
-                                $this->l("%s - value '%s' is too short. Minimum is %s characters."),
+                                $this->module->l("%s - value '%s' is too short. Minimum is %s characters."),
                                 $name,
                                 $field,
                                 $value
@@ -61,7 +67,7 @@ class Validation extends CustomPopup
 
                 case 'isnumber':
                     if (!is_numeric($field)) {
-                        $this->setError($name, sprintf($this->l("%s - value '%s' is not a number."), $name, $field));
+                        $this->setError($name, sprintf($this->module->l("%s - value '%s' is not a number."), $name, $field));
                     }
                     break;
 
@@ -71,7 +77,7 @@ class Validation extends CustomPopup
                         $this->setError(
                             $name,
                             sprintf(
-                                $this->l("%s - value '%s' is not valid HEX color."),
+                                $this->module->l("%s - value '%s' is not valid HEX color."),
                                 $name,
                                 $field
                             )

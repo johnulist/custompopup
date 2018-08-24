@@ -62,30 +62,27 @@
             }
         </script>
     {/literal}
-{/if}
-{literal}<style>
-        div.popup {
-            background-color:{/literal} {$popup_color}{literal};
-            padding:{/literal} {$padding}{literal}px;
-            padding-top:{/literal} {$top_padding}{literal}px;
-        }
 
-        .popup_back {
-            background-color: {/literal}{$back_color}{literal};
-        }
-        .popup_close:hover {
-            color: {/literal}{$button_hover_color}{literal};
-        }
-        .popup_close {
-            color: {/literal}{$button_color}{literal};
-            top: {/literal}{$button_top_padding}{literal}px;
-            font-size: {/literal}{$button_size}{literal}px;
+    {literal}
+        <style>
+            div.popup {
+                background-color:{/literal} {$popup_color}{literal};
+                padding:{/literal} {$padding}{literal}px;
+                padding-top:{/literal} {$top_padding}{literal}px;
+            }
+
+            .popup_back {
+                background-color: {/literal}{$back_color}{literal};
+            }
+            .popup_close:hover {
+                color: {/literal}{$button_hover_color}{literal};
+            }
+            .popup_close {
+                color: {/literal}{$button_color}{literal};
+                top: {/literal}{$button_top_padding}{literal}px;
+                font-size: {/literal}{$button_size}{literal}px;
             {/literal}{$button_position}{literal}: 5px;
-        }
-    </style>
-{/literal}
-
-
-<div id="inline" style="display:none">
-
-</div>
+            }
+        </style>
+    {/literal}
+{/if}

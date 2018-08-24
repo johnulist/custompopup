@@ -10,6 +10,46 @@
 *}
 
 <script src="{$colorpicker_path}"></script>
+<script>
+    document.addEventListener('click', function (event) {
+        var alertElement = findUpTag(event.target, '.pc-alert');
+
+        if (alertElement) {
+            alertElement.style.display = 'none';
+        }
+    });
+
+    function findUpTag(el, selector) {
+        if (el.matches(selector)) {
+            return el;
+        }
+
+        while (el.parentNode) {
+            el = el.parentNode;
+            if (el.matches && el.matches(selector)) {
+                return el;
+            }
+        }
+        return null;
+    }
+</script>
+
+{if isset($errors)}
+    <div class="pc-alert pc-errors">
+        {$errors}
+        <br />
+        <small>Click to dismiss</small>
+    </div>
+{/if}
+
+{if isset($success)}
+    <div class="pc-alert pc-success">
+        {$success}
+        <br />
+        <small>Click to dismiss</small>
+    </div>
+{/if}
+
 
 <div role="tabpanel" class="prestacraft">
     <!-- Nav tabs -->
@@ -44,6 +84,7 @@
             {include file='./extras/prestacraft.tpl'}
                 <br /><br /><br />
             {include file='./extras/paypal.tpl'}
+                <br /><br />
         </div>
     </div>
 

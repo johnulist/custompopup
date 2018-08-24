@@ -6,6 +6,32 @@
     float: none;
 }
 
+.alert {
+    position: absolute !important;
+    right: 15px;
+    opacity: 1;
+}
+
+.pc-alert {
+    width: 100%;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.pc-success {
+    background: #31A1C5;
+    margin-bottom: 15px;
+    color: white;
+}
+
+.pc-errors {
+    background: #b23a48;
+    margin-bottom: 15px;
+    color: white;
+}
+
 .prestacraft .nav-tabs>li.active>a, .prestacraft .nav-tabs>li.active>a:hover, .prestacraft .nav-tabs>li.active>a:focus {
     border: 1px solid #31A1C5 !important;
     border-radius: 0 !important;
