@@ -16,9 +16,9 @@ require_once _PS_MODULE_DIR_.'custompopup/classes/db/ResponsivePopupPages.php';
 
 class DisplayForm extends PrestaCraftFormCore
 {
-    public function __construct($moduleName)
+    public function __construct($moduleObject)
     {
-        parent::__construct($moduleName, __CLASS__);
+        parent::__construct($moduleObject, __CLASS__);
     }
 
     public function render()

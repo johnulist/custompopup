@@ -15,9 +15,9 @@ require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormCore.php';
 
 class CustomizeCloseForm extends PrestaCraftFormCore
 {
-    public function __construct($name)
+    public function __construct($moduleObject)
     {
-        parent::__construct($name, __CLASS__);
+        parent::__construct($moduleObject, __CLASS__);
     }
 
     public function render()
@@ -55,25 +55,6 @@ class CustomizeCloseForm extends PrestaCraftFormCore
                         'class' => 'fixed-width-sm',
                         'suffix' => $this->module->l('pixels'),
                     ),
-                    array(
-                        'type'      => 'radio',
-                        'label'     => $this->module->l('Position'),
-                        'name'      => 'CUSTOMPOPUP_BUTTON_POSITION',
-                        'required'  => true,
-                        'class'     => 't',
-                        'values'    => array(
-                            array(
-                                'id'    => 'left',
-                                'value' => 'left',
-                                'label' => $this->module->l('Left')
-                            ),
-                            array(
-                                'id'    => 'right',
-                                'value' => 'right',
-                                'label' => $this->module->l('Right')
-                            )
-                        ),
-                    ),
                 ),
             ),
         );
@@ -89,7 +70,6 @@ class CustomizeCloseForm extends PrestaCraftFormCore
         $fields['CUSTOMPOPUP_BUTTON_HOVER_COLOR'] = Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR');
         $fields['CUSTOMPOPUP_BUTTON_SIZE'] = Configuration::get('CUSTOMPOPUP_BUTTON_SIZE');
         $fields['CUSTOMPOPUP_BUTTON_TOP_PADDING'] = Configuration::get('CUSTOMPOPUP_BUTTON_TOP_PADDING');
-        $fields['CUSTOMPOPUP_BUTTON_POSITION'] = Configuration::get('CUSTOMPOPUP_BUTTON_POSITION');
 
         return $fields;
     }

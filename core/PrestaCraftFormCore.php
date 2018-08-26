@@ -19,18 +19,12 @@ abstract class PrestaCraftFormCore implements PrestaCraftFormInterface
     protected $fields;
     protected $className;
 
-    public function __construct($moduleName, $className)
+    public function __construct($module, $className)
     {
-        if (!$moduleName) {
-            throw new \Exception("[PrestaCraft Exception] Missing module name");
-        }
-
-        $module = Module::getInstanceByName($moduleName);
-
         if (!$module) {
-            throw new \Exception("[PrestaCraft Exception] Incorrect module name");
+            throw new \Exception("[PrestaCraft Exception] Missing module object");
         }
-
+        
         $this->module = $module;
         $this->className = $className;
     }

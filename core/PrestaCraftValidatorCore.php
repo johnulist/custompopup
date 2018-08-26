@@ -22,13 +22,14 @@ abstract class PrestaCraftValidatorCore
 
         $validatorDir = _PS_MODULE_DIR_.$this->module->name.'/classes/form/validators/';
         $formDir = _PS_MODULE_DIR_.$this->module->name.'/classes/form/';
+        $validatorName = str_replace('Form', 'Validator', $formName);
 
         if (!file_exists($formDir .$formName.'.php')) {
             throw new \Exception("[PrestaCraft Exception] Form '{$formName}' file not found in classes/form directory");
         } else {
-            if (!file_exists($formDir .$formName.'.php')) {
+            if (!file_exists($validatorDir.$validatorName.'.php')) {
                 throw new \Exception(
-                    "[PrestaCraft Exception] Validator '{$formName}Validator' 
+                    "[PrestaCraft Exception] Validator '{$validatorName}'
                     file not found in classes/form/validators directory"
                 );
             }
@@ -37,7 +38,7 @@ abstract class PrestaCraftValidatorCore
             $this->validatorFile = $validatorDir.$formName.'Validator.php';
             $this->validation = new Validation($moduleObject);
 
-            require_once $validatorDir.$formName.'Validator.php';
+            require_once $validatorDir.$validatorName.'.php';
         }
     }
 

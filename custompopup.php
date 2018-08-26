@@ -28,7 +28,9 @@ require_once _PS_MODULE_DIR_.'custompopup/classes/form/CustomizeStyleForm.php';
 require_once _PS_MODULE_DIR_.'custompopup/classes/form/DisplayForm.php';
 require_once _PS_MODULE_DIR_.'custompopup/classes/form/SettingsForm.php';
 // Validators
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/SettingsFormValidator.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/SettingsValidator.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/CustomizeStyleValidator.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/CustomizeCloseValidator.php';
 
 // Utils
 require_once _PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftTools.php';
@@ -136,7 +138,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
     public function postProcess()
     {
-        $settingsFormData = array(
+        $settingsData = array(
             'CUSTOMPOPUP_ENABLED' => Tools::getValue('CUSTOMPOPUP_ENABLED'),
             'CUSTOMPOPUP_COOKIE' => Tools::getValue('CUSTOMPOPUP_COOKIE'),
             'CUSTOMPOPUP_DELAY' => Tools::getValue('CUSTOMPOPUP_DELAY'),
@@ -148,166 +150,57 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             $langContent['CUSTOMPOPUP_CONTENT_'.$la['id_lang']] = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$la['id_lang']);
         }
 
-        $settingsFormDataAll = array_merge($settingsFormData, $langContent);
+        $settingsDataAll = array_merge($settingsData, $langContent);
 
-        $settingsFormValidator = new SettingsFormValidator($this, 'SettingsForm');
-        $settingsFormValidator->setData($settingsFormDataAll);
-        $settingsFormValidator->validate();
+        $settingsValidator = new SettingsValidator($this, 'SettingsForm');
+        $settingsValidator->setData($settingsDataAll);
+        $settingsValidator->validate();
 
-        if ($settingsFormValidator->getErrors()) {
-            $this->errors = $settingsFormValidator->getErrors();
+        if ($settingsValidator->getErrors()) {
+            $this->errors = $settingsValidator->getErrors();
+        } else {
+            if ($settingsValidator->getSuccess()) {
+                $this->success = true;
+            }
         }
 
-        if ($settingsFormValidator->getSuccess()) {
+        $customizeStyleData = array(
+            'CUSTOMPOPUP_COLOR' => Tools::getValue('CUSTOMPOPUP_COLOR'),
+            'CUSTOMPOPUP_BACK_COLOR' => Tools::getValue('CUSTOMPOPUP_BACK_COLOR'),
+            'CUSTOMPOPUP_PADDING' => Tools::getValue('CUSTOMPOPUP_PADDING'),
+            'CUSTOMPOPUP_TOP_PADDING' => Tools::getValue('CUSTOMPOPUP_TOP_PADDING'),
+        );
+
+        $customizeStyleValidator = new CustomizeStyleValidator($this, 'CustomizeStyleForm');
+        $customizeStyleValidator->setData($customizeStyleData);
+        $customizeStyleValidator->validate();
+
+        if ($customizeStyleValidator->getErrors()) {
+            $this->errors = $customizeStyleValidator->getErrors();
+        }
+
+        if ($customizeStyleValidator->getSuccess()) {
             $this->success = true;
         }
 
-        if (Tools::isSubmit('CustomizeStyleForm')) {
-            $Validation->validate(
-                $this->l('Popup color'),
-                Tools::getValue('CUSTOMPOPUP_COLOR'),
-                array(
-                    'ishex' => 1,
-                    'notempty' => 1
-                )
-            );
+        $custoimzeCloseData = array(
+            'CUSTOMPOPUP_BUTTON_COLOR' => Tools::getValue('CUSTOMPOPUP_BUTTON_COLOR'),
+            'CUSTOMPOPUP_BUTTON_HOVER_COLOR' => Tools::getValue('CUSTOMPOPUP_BUTTON_HOVER_COLOR'),
+            'CUSTOMPOPUP_BUTTON_SIZE' => Tools::getValue('CUSTOMPOPUP_BUTTON_SIZE'),
+            'CUSTOMPOPUP_BUTTON_TOP_PADDING' => Tools::getValue('CUSTOMPOPUP_BUTTON_TOP_PADDING'),
+            'CUSTOMPOPUP_BUTTON_POSITION' => Tools::getValue('CUSTOMPOPUP_BUTTON_POSITION'),
+        );
 
-            $Validation->validate(
-                $this->l('Background color'),
-                Tools::getValue('CUSTOMPOPUP_BACK_COLOR'),
-                array(
-                    'ishex' => 1,
-                    'notempty' => 1
-                )
-            );
+        $customizeCloseValidator = new CustomizeCloseValidator($this, 'CustomizeCloseForm');
+        $customizeCloseValidator->setData($custoimzeCloseData);
+        $customizeCloseValidator->validate();
 
-            $Validation->validate(
-                $this->l('Content padding'),
-                Tools::getValue('CUSTOMPOPUP_PADDING'),
-                array(
-                    'isnumber' => 1,
-                    'notempty' => 1
-                )
-            );
-
-            $Validation->validate(
-                $this->l('Content top padding'),
-                Tools::getValue('CUSTOMPOPUP_TOP_PADDING'),
-                array(
-                    'isnumber' => 1,
-                    'notempty' => 1
-                )
-            );
-
-            if (!$Validation->getError($this->l('Popup color'))) {
-                Configuration::updateValue('CUSTOMPOPUP_COLOR', Tools::getValue('CUSTOMPOPUP_COLOR'));
-            }
-
-            if (!$Validation->getError($this->l('Background color'))) {
-                Configuration::updateValue('CUSTOMPOPUP_BACK_COLOR', Tools::getValue('CUSTOMPOPUP_BACK_COLOR'));
-            }
-
-            if (!$Validation->getError($this->l('Content padding'))) {
-                Configuration::updateValue('CUSTOMPOPUP_PADDING', Tools::getValue('CUSTOMPOPUP_PADDING'));
-            }
-
-            if (!$Validation->getError($this->l('Content top padding'))) {
-                Configuration::updateValue('CUSTOMPOPUP_TOP_PADDING', Tools::getValue('CUSTOMPOPUP_TOP_PADDING'));
-            }
-
-            if ($Validation->getAllErrors()) {
-                $errors = array();
-
-                foreach ($Validation->getAllErrors() as $value) {
-                    foreach ($value as $val) {
-                        $errors[]=$val;
-                    }
-                }
-
-                $newLineErrors = implode("<br>", $errors);
-
-                return $this->displayError($newLineErrors);
-            }
-
-            $this->_clearCache('custompopup.tpl');
-            return $this->displayConfirmation($this->l('The settings have been updated.'));
+        if ($customizeCloseValidator->getErrors()) {
+            $this->errors = $customizeCloseValidator->getErrors();
         }
 
-        if (Tools::isSubmit('CustomizeCloseForm')) {
-            Configuration::updateValue('CUSTOMPOPUP_BUTTON_POSITION', Tools::getValue('CUSTOMPOPUP_BUTTON_POSITION'));
-
-            $Validation->validate(
-                $this->l('Color'),
-                Tools::getValue('CUSTOMPOPUP_BUTTON_COLOR'),
-                array(
-                    'ishex' => 1,
-                    'notempty' => 1
-                )
-            );
-
-            $Validation->validate(
-                $this->l('Hover color'),
-                Tools::getValue('CUSTOMPOPUP_BUTTON_HOVER_COLOR'),
-                array(
-                    'ishex' => 1,
-                    'notempty' => 1
-                )
-            );
-
-            $Validation->validate(
-                $this->l('Size'),
-                Tools::getValue('CUSTOMPOPUP_BUTTON_SIZE'),
-                array(
-                    'isnumber' => 1,
-                    'notempty' => 1
-                )
-            );
-
-            $Validation->validate(
-                $this->l('Top padding'),
-                Tools::getValue('CUSTOMPOPUP_BUTTON_TOP_PADDING'),
-                array(
-                    'isnumber' => 1,
-                    'notempty' => 1
-                )
-            );
-
-            if (!$Validation->getError($this->l('Color'))) {
-                Configuration::updateValue('CUSTOMPOPUP_BUTTON_COLOR', Tools::getValue('CUSTOMPOPUP_BUTTON_COLOR'));
-            }
-
-            if (!$Validation->getError($this->l('Hover color'))) {
-                Configuration::updateValue(
-                    'CUSTOMPOPUP_BUTTON_HOVER_COLOR',
-                    Tools::getValue('CUSTOMPOPUP_BUTTON_HOVER_COLOR')
-                );
-            }
-
-            if (!$Validation->getError($this->l('Size'))) {
-                Configuration::updateValue('CUSTOMPOPUP_BUTTON_SIZE', Tools::getValue('CUSTOMPOPUP_BUTTON_SIZE'));
-            }
-
-            if (!$Validation->getError($this->l('Top padding'))) {
-                Configuration::updateValue(
-                    'CUSTOMPOPUP_BUTTON_TOP_PADDING',
-                    Tools::getValue('CUSTOMPOPUP_BUTTON_TOP_PADDING')
-                );
-            }
-
-            if ($Validation->getAllErrors()) {
-                $errors = array();
-                foreach ($Validation->getAllErrors() as $value) {
-                    foreach ($value as $val) {
-                        $errors[] = $val;
-                    }
-                }
-
-                $newLineErrors = implode("<br>", $errors);
-                return $this->displayError($newLineErrors);
-            }
-
-            $this->_clearCache('custompopup.tpl');
-            return $this->displayConfirmation($this->l('The settings have been updated.'));
+        if ($customizeCloseValidator->getSuccess()) {
+            $this->success = true;
         }
 
         if (Tools::isSubmit('DisplayForm')) {
@@ -332,25 +225,25 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
     public function renderSettings()
     {
-        $form = new SettingsForm($this->name);
+        $form = new SettingsForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderCustomizeStyle()
     {
-        $form = new CustomizeStyleForm($this->name);
+        $form = new CustomizeStyleForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderCustomizeClose()
     {
-        $form = new CustomizeCloseForm($this->name);
+        $form = new CustomizeCloseForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderDisplay()
     {
-        $form = new Displayform($this->name);
+        $form = new Displayform($this);
         return $form->render()->buildForm();
     }
 

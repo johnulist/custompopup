@@ -3,7 +3,7 @@
 require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftValidatorCore.php';
 require_once _PS_MODULE_DIR_.'custompopup/classes/utils/Validation.php';
 
-class SettingsFormValidator extends PrestacraftValidatorCore
+class SettingsValidator extends PrestacraftValidatorCore
 {
     public function __construct($moduleObject, $formName)
     {
@@ -37,7 +37,7 @@ class SettingsFormValidator extends PrestacraftValidatorCore
 
     protected function save()
     {
-        Configuration::updateValue('CUSTOMPOPUP_ENABLED', $this->getField('CUSTOMPOPUP_COOKIE'));
+        Configuration::updateValue('CUSTOMPOPUP_ENABLED', $this->getField('CUSTOMPOPUP_ENABLED'));
 
         // if no errors occured
         if (!$this->validation->getError($this->module->l('Popup content'))) {
@@ -47,13 +47,13 @@ class SettingsFormValidator extends PrestacraftValidatorCore
                 $popup = new ResponsivePopup();
                 $popup->id_shop = Context::getContext()->shop->id;
                 $popup->id_lang = $lang['id_lang'];
-                $popup->content = Tools::getValue('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']);
+                $popup->content = $this->getField('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']);
                 $popup->save();
             }
         }
 
-        Configuration::updateValue('CUSTOMPOPUP_COOKIE', Tools::getValue('CUSTOMPOPUP_COOKIE'));
-        Configuration::updateValue('CUSTOMPOPUP_DELAY', Tools::getValue('CUSTOMPOPUP_DELAY'));
+        Configuration::updateValue('CUSTOMPOPUP_COOKIE', $this->getField('CUSTOMPOPUP_COOKIE'));
+        Configuration::updateValue('CUSTOMPOPUP_DELAY', $this->getField('CUSTOMPOPUP_DELAY'));
 
         $this->setSuccess(true);
     }
