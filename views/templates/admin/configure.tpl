@@ -9,30 +9,9 @@
  * @copyright  PrestaCraft
 *}
 
+<link rel="stylesheet" type="text/css" href="{$module_dir}/views/css/back.css">
 <script src="{$colorpicker_path}"></script>
-<script>
-    document.addEventListener('click', function (event) {
-        var alertElement = findUpTag(event.target, '.pc-alert');
-
-        if (alertElement) {
-            alertElement.style.display = 'none';
-        }
-    });
-
-    function findUpTag(el, selector) {
-        if (el.matches(selector)) {
-            return el;
-        }
-
-        while (el.parentNode) {
-            el = el.parentNode;
-            if (el.matches && el.matches(selector)) {
-                return el;
-            }
-        }
-        return null;
-    }
-</script>
+<script src="{$module_dir}/views/js/back.js"></script>
 
 {if isset($errors)}
     <div class="pc-alert pc-errors">

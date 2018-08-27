@@ -69,12 +69,10 @@ class ResponsivePopupPages extends ObjectModel
         return true;
     }
 
-
     public function getAll()
     {
         return Db::getInstance()->executeS('SELECT * FROM '._DB_PREFIX_.'responsive_popup_pages');
     }
-
 
     public static function checkEnable($field)
     {
@@ -84,5 +82,22 @@ class ResponsivePopupPages extends ObjectModel
 		WHERE id_page="'.$field.'"');
 
         return @$result;
+    }
+
+    public static function setHookValue($hook, $value)
+    {
+        Db::getInstance()->update(
+            'responsive_popup_pages',
+            array('enabled' => $value),
+            'id_page="'.$hook.'";'
+        );
+    }
+
+    public static function disableAll()
+    {
+        Db::getInstance()->execute(
+            'UPDATE '._DB_PREFIX_.'responsive_popup_pages 
+            SET `enabled`=0;'
+        );
     }
 }

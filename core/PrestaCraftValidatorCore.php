@@ -11,6 +11,7 @@ abstract class PrestaCraftValidatorCore
     private $data;
     private $errors;
     private $success = false;
+    private $allowEmpty = false;
 
     public function __construct($moduleObject, $formName)
     {
@@ -44,22 +45,32 @@ abstract class PrestaCraftValidatorCore
 
     abstract protected function processValidation();
 
+    /**
+     * Validation & form saving
+     * 1. Validate form and set errors if occured
+     * 2. Set all fields errors to one variable
+     * 3. Save
+     *
+     * @throws Exception
+     */
     public function validate()
     {
-        if (!$this->getData() || count($this->getData()) == 0) {
-            throw new \Exception("[PrestaCraft Exception] Form data for '{$this->formName}' is not provided");
+        if (!$this->allowEmpty) {
+            if (!$this->getData() || count($this->getData()) == 0) {
+                throw new \Exception("[PrestaCraft Exception] Form data for '{$this->formName}' is not provided");
+            }
         }
 
         if (Tools::isSubmit($this->formName)) {
             $this->processValidation();
-            $this->displayErrorsIfOccured();
+            $this->setErrorsIfOccured();
             $this->save();
         }
     }
 
     abstract protected function save();
 
-    protected function displayErrorsIfOccured()
+    protected function setErrorsIfOccured()
     {
         if ($this->validation->getAllErrors()) {
             $errors = array();
@@ -96,9 +107,20 @@ abstract class PrestaCraftValidatorCore
         return $this->errors;
     }
 
-    public function setData($array)
+    /**
+     * Set form data to validate
+     *
+     * @param $array : Key->Value array where key should be equal to field from Tools::getValue(field)
+     * @param bool $allowEmpty : Determine if you can pass empty data array (ex. form with only one checkbox option
+     *                           with no checkbox selected)
+     */
+    public function setData($array, $allowEmpty = false)
     {
         $this->data = $array;
+
+        if ($allowEmpty) {
+            $this->allowEmpty = true;
+        }
     }
 
     public function getData()

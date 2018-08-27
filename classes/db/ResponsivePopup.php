@@ -50,4 +50,27 @@ class ResponsivePopup extends ObjectModel
             throw new PrestaShopException($e->getMessage());
         }
     }
+
+    public static function getContentForLanguages()
+    {
+        $sql = array();
+        $content = array();
+        $languages = Language::getLanguages(true);
+
+        // get content for current shop and all languages
+        foreach ($languages as $la) {
+            $sql[] = Db::getInstance()->executeS('SELECT `content`,`id_lang`
+            FROM ' . _DB_PREFIX_ . 'responsive_popup
+            WHERE id_lang='.$la['id_lang'].' AND id_shop='.Context::getContext()->shop->id.'');
+        }
+
+        // make assignment to array: id_lang => content
+        foreach ($sql as $val) {
+            for ($i=0; $i < sizeof($sql); $i++) {
+                @$content[$val[$i]['id_lang']] = $val[$i]['content'];
+            }
+        }
+
+        return $content;
+    }
 }

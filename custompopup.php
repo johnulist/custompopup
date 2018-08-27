@@ -16,30 +16,35 @@ if (!defined('_PS_VERSION_') || !defined('_PS_MODULE_DIR_')) {
 }
 
 // Core
-require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftModuleInterface.php';
+require_once _PS_MODULE_DIR_.$this->name.'/core/PrestaCraftModuleInterface.php';
 
 // Database
-require_once _PS_MODULE_DIR_.'custompopup/classes/db/ResponsivePopup.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/db/ResponsivePopupPages.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/db/ResponsivePopup.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/db/ResponsivePopupPages.php';
 
 // Forms
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/CustomizeCloseForm.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/CustomizeStyleForm.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/DisplayForm.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/SettingsForm.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/CustomizeCloseForm.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/CustomizeStyleForm.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/DisplayForm.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/SettingsForm.php';
 // Validators
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/SettingsValidator.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/CustomizeStyleValidator.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/form/validators/CustomizeCloseValidator.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/CustomizeCloseValidator.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/CustomizeStyleValidator.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/DisplayValidator.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/SettingsValidator.php';
 
 // Utils
-require_once _PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftTools.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftVariables.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/utils/PrestaCraftTools.php';
+require_once _PS_MODULE_DIR_.$this->name.'/classes/utils/PrestaCraftVariables.php';
 
 class CustomPopup extends Module implements PrestaCraftModuleInterface
 {
+    private $installHooks = array(
+      'header'
+    );
     private $errors;
     private $success = false;
+    private $dynamicHooking = true;
 
     public function __construct()
     {
@@ -59,6 +64,36 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall?');
     }
 
+    /**
+     * Magic method to call hooks dynamically, based on user choice
+     *
+     * @param $method
+     * @param $args
+     * @return mixed
+     */
+    public function __call($method, $args)
+    {
+        if ($this->dynamicHooking) {
+            $prevent = false;
+
+            // Ignore hook functions registered in install() method
+            foreach ($this->installHooks as $hook) {
+                if ('hook'.strtolower($hook) == strtolower($method)) {
+                    $prevent = true;
+                }
+            }
+
+            if (!$prevent) {
+                if (function_exists($method))
+                    return call_user_func_array($method, $args);
+
+                // Check for a call to an hook
+                if (strpos($method, 'hook') !== false) {
+                    return $this->functionHook($args[0]);
+                }
+            }
+        }
+    }
 
     public function install()
     {
@@ -73,16 +108,15 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
         PrestaCraftVariables::setDefaultValues();
 
+        foreach ($this->installHooks as $hook) {
+            $this->registerHook($hook);
+        }
+
         return parent::install() &&
             ResponsivePopup::createTable() &&
             ResponsivePopupPages::createTable() &&
-            ResponsivePopupPages::fixtures() &&
-            $this->registerHook('home') &&
-            $this->registerHook('backOfficeHeader') &&
-            $this->registerHook('displayFooter') &&
-            $this->registerHook('header');
+            ResponsivePopupPages::fixtures();
     }
-
 
     public function uninstall()
     {
@@ -92,16 +126,15 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         return true;
     }
 
-    public function hookBackOfficeHeader()
-    {
-        if (Tools::getValue('configure') == $this->name) {
-            $this->context->controller->addCSS($this->_path.'views/css/back.css');
-        }
-    }
-
+    /**
+     * Module configuration page
+     *
+     * @return mixed
+     */
     public function getContent()
     {
         $this->postProcess();
+        $this->hookService();
 
         $data = Tools::file_get_contents(
             'http://prestacraft.com/version_checker.php?module='.$this->name.'&version='.$this->version.''
@@ -136,6 +169,11 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         return $output;
     }
 
+    /**
+     * Handling form validation & sending
+     *
+     * @return string
+     */
     public function postProcess()
     {
         $settingsData = array(
@@ -203,26 +241,28 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             $this->success = true;
         }
 
-        if (Tools::isSubmit('DisplayForm')) {
-            foreach ($_POST as $key => $value) {
-                if (strpos($key, 'pages_') === 0) {
-                    if ($value) {
-                        $val = 1;
-                    } else {
-                        $val = 0;
-                    }
+        $displayData = array();
 
-                    self::updatePage(str_replace("pages_", "", $key), $val);
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, 'pages_') === 0) {
+                if ($value) {
+                    $displayData[str_replace("pages_", "", $key)] = 1;
                 }
             }
+        }
 
-            $this->_clearCache('custompopup.tpl');
-            return $this->displayConfirmation($this->l('The settings have been updated.'));
+        $displayValidator = new DisplayValidator($this, 'DisplayForm');
+        $displayValidator->setData($displayData, true);
+        $displayValidator->validate();
+
+        if ($displayValidator->getSuccess()) {
+            $this->success = true;
         }
 
         return '';
     }
 
+    // ---- Forms [start] ----
     public function renderSettings()
     {
         $form = new SettingsForm($this);
@@ -246,72 +286,29 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $form = new Displayform($this);
         return $form->render()->buildForm();
     }
+    // ---- Forms [end] ----
 
-    public function hookDisplayHome($params)
+    // ---- Hooks [start] ----
+    private function hookService()
     {
-        return $this->functionHook();
-    }
+        $enabledHooks = array();
+        $rpp = new ResponsivePopupPages();
 
-    public function hookDisplayFooter($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayMyAccountBlockfooter($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayMyAccountBlock($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayPaymentTop($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayAfterCarrier($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayCustomerAccount($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayCustomerAccountForm($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayOrderConfirmation($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayOrderDetail($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayFooterProduct($params)
-    {
-        return $this->functionHook();
-    }
-
-    public function hookDisplayCarrierList($params)
-    {
-        return $this->functionHook();
+        foreach ($rpp->getAll() as $item) {
+            if ($item["enabled"] == 1) {
+                $this->registerHook($item["id_page"]);
+                $enabledHooks[] = $item["id_page"];
+            } else {
+                $this->unregisterHook($item["id_page"]);
+            }
+        }
     }
 
     public function functionHook()
     {
         $langContent = array();
 
-        foreach ($this->getContentForLanguages() as $langID => $content) {
+        foreach (ResponsivePopup::getContentForLanguages() as $langID => $content) {
             $langContent['content_'.$langID] = trim(json_encode($content), '"');
         }
 
@@ -320,29 +317,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $this->context->smarty->assign($all);
 
         return $this->display(__FILE__, 'custompopup.tpl');
-    }
-
-    public function getContentForLanguages()
-    {
-        $sql = array();
-        $content = array();
-        $languages = Language::getLanguages(true);
-
-        // get content for current shop and all languages
-        foreach ($languages as $la) {
-            $sql[] = Db::getInstance()->executeS('SELECT `content`,`id_lang`
-            FROM ' . _DB_PREFIX_ . 'responsive_popup
-            WHERE id_lang='.$la['id_lang'].' AND id_shop='.Context::getContext()->shop->id.'');
-        }
-
-        // make assignment to array: id_lang => content
-        foreach ($sql as $val) {
-            for ($i=0; $i < sizeof($sql); $i++) {
-                @$content[$val[$i]['id_lang']] = $val[$i]['content'];
-            }
-        }
-
-        return $content;
     }
 
     public function hookDisplayHeader()
@@ -357,13 +331,5 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
         return $this->display(__FILE__, 'header.tpl');
     }
-
-    private static function updatePage($field, $value)
-    {
-        Db::getInstance()->update(
-            'responsive_popup_pages',
-            array('enabled' => $value),
-            'id_page="'.$field.'";'
-        );
-    }
+    // ---- Hooks [end] ----
 }

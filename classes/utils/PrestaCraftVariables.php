@@ -49,4 +49,9 @@ class PrestaCraftVariables
             'version' => self::getVersion(),
         );
     }
+
+    public static function getVersion()
+    {
+        return Tools::substr(_PS_VERSION_, 0, 3);
+    }
 }
