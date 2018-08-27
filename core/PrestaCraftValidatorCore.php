@@ -111,7 +111,7 @@ abstract class PrestaCraftValidatorCore
         if (array_key_exists($field, $this->data)) {
             return $this->data[$field];
         } else {
-            throw new \Exception("[PrestaCraft Exception] Data key not found in getField() method");
+            throw new \Exception("[PrestaCraft Exception] Field not found in getField() method");
         }
     }
 }

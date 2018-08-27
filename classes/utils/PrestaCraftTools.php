@@ -38,6 +38,4 @@ class PrestaCraftTools
     {
         return Tools::substr(_PS_VERSION_, 0, 3);
     }
-
-
 }

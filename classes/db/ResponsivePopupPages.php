@@ -48,11 +48,6 @@ class ResponsivePopupPages extends ObjectModel
         }
     }
 
-    /**
-     * @param bool $frontOfficeOnly
-     * @return bool
-     * @throws PrestaShopException
-     */
     public static function fixtures()
     {
         $shops = Shop::getShops(true, null, true);
