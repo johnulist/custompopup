@@ -16,26 +16,27 @@ if (!defined('_PS_VERSION_') || !defined('_PS_MODULE_DIR_')) {
 }
 
 // Core
-require_once _PS_MODULE_DIR_.$this->name.'/core/PrestaCraftModuleInterface.php';
+require_once _PS_MODULE_DIR_.'/custompopup/core/PrestaCraftModuleInterface.php';
 
 // Database
-require_once _PS_MODULE_DIR_.$this->name.'/classes/db/ResponsivePopup.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/db/ResponsivePopupPages.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/db/ResponsivePopup.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/db/ResponsivePopupPages.php';
 
 // Forms
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/CustomizeCloseForm.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/CustomizeStyleForm.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/DisplayForm.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/SettingsForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CloseAndFooterForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CustomizeCloseForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CustomizeStyleForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/DisplayForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/SettingsForm.php';
 // Validators
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/CustomizeCloseValidator.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/CustomizeStyleValidator.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/DisplayValidator.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/form/validators/SettingsValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CustomizeCloseValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CustomizeStyleValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/DisplayValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/SettingsValidator.php';
 
 // Utils
-require_once _PS_MODULE_DIR_.$this->name.'/classes/utils/PrestaCraftTools.php';
-require_once _PS_MODULE_DIR_.$this->name.'/classes/utils/PrestaCraftVariables.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/utils/PrestaCraftTools.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/utils/PrestaCraftVariables.php';
 
 class CustomPopup extends Module implements PrestaCraftModuleInterface
 {
@@ -154,6 +155,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $this->context->smarty->assign('TAB_SETTINGS', $this->renderSettings());
         $this->context->smarty->assign('TAB_CUSTOMIZE_STYLE', $this->renderCustomizeStyle());
         $this->context->smarty->assign('TAB_CUSTOMIZE_CLOSE', $this->renderCustomizeClose());
+        $this->context->smarty->assign('TAB_CLOSE_AND_FOOTER', $this->renderCloseAndFooter());
         $this->context->smarty->assign('TAB_DISPLAY', $this->renderDisplay());
 
         if ($this->errors) {
@@ -281,9 +283,15 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         return $form->render()->buildForm();
     }
 
+    public function renderCloseAndFooter()
+    {
+        $form = new CloseAndFooterForm($this);
+        return $form->render()->buildForm();
+    }
+
     public function renderDisplay()
     {
-        $form = new Displayform($this);
+        $form = new DisplayForm($this);
         return $form->render()->buildForm();
     }
     // ---- Forms [end] ----

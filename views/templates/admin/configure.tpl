@@ -49,6 +49,12 @@
             </li>
 
             <li role="presentation">
+                <a href="#extras" aria-controls="profile" role="tab" data-toggle="tab">
+                    <i class="icon-remove"></i>&nbsp;&nbsp;&nbsp;{l s='Close & Footer' mod='custompopup'}
+                </a>
+            </li>
+
+            <li role="presentation">
                 <a href="#display" aria-controls="profile" role="tab" data-toggle="tab">
                     <i class="icon-eye-open"></i>&nbsp;&nbsp;&nbsp;{l s='Display on pages' mod='custompopup'}
                 </a>
@@ -77,6 +83,7 @@
                 <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_CLOSE}</div>
                 </div>
             </div>
+            <div role="tabpanel" class="tab-pane" id="extras">{$TAB_CLOSE_AND_FOOTER}</div>
             <div role="tabpanel" class="tab-pane" id="display">{$TAB_DISPLAY}</div>
         </div>
     </div>
