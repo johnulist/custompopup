@@ -76,9 +76,5 @@ class CustomizeCloseValidator extends PrestacraftValidatorCore
                 $this->getField('CUSTOMPOPUP_BUTTON_TOP_PADDING')
             );
         }
-
-        if (!$this->validation->getAllErrors() || count($this->validation->getAllErrors()) == 0) {
-            $this->setSuccess(true);
-        }
     }
 }

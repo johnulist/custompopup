@@ -6,6 +6,10 @@
     float: none;
 }
 
+.prestacraft .dropdown-menu a {
+    color: black !important;
+}
+
 .alert {
     position: absolute !important;
     right: 15px;

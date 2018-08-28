@@ -13,6 +13,14 @@
 
 class PrestaCraftTools
 {
+    /**
+     * Get hooks using PrestaShop getHooks() method, but with extra filter - in case you want only FrontOffice hooks
+     *
+     * @param bool $frontOfficeOnly
+     * @param bool $position
+     * @param bool $displayOnly
+     * @return array
+     */
     public static function getHooks($frontOfficeOnly = false, $position = false, $displayOnly = false)
     {
         $hooks = Hook::getHooks($position, $displayOnly);

@@ -84,6 +84,23 @@ class Validation
                         );
                     }
                     break;
+
+                case 'is_url_if_not_empty':
+                    if (Tools::strlen(trim($field)) > 0) {
+                        if (substr( $field, 0, 7 ) != "http://" && substr( $field, 0, 8 ) != "https://") {
+                            $this->setError(
+                                $name,
+                                sprintf(
+                                    $this->module->l(
+                                        "%s - Entered URL '%s' is not valid. It must begin with http:// or https://"
+                                    ),
+                                    $name,
+                                    $field
+                                )
+                            );
+                        }
+                    }
+                    break;
             }
         }
     }

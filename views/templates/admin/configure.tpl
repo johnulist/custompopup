@@ -9,7 +9,7 @@
  * @copyright  PrestaCraft
 *}
 
-<link rel="stylesheet" type="text/css" href="{$module_dir}/views/css/back.css">
+<link rel="stylesheet" type="text/css" href="{$module_dir}views/css/back.css">
 <script src="{$colorpicker_path}"></script>
 <script src="{$module_dir}/views/js/back.js"></script>
 

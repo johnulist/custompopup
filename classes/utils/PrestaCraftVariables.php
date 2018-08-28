@@ -47,6 +47,12 @@ class PrestaCraftVariables
             'button_top_padding' => Configuration::get('CUSTOMPOPUP_BUTTON_TOP_PADDING'),
             'button_position' => Configuration::get('CUSTOMPOPUP_BUTTON_POSITION'),
             'version' => self::getVersion(),
+            'closetype_overlay' => Configuration::get('CUSTOMPOPUP_OVERLAY'),
+            'closetype_button' => Configuration::get('CUSTOMPOPUP_BUTTON'),
+            'closetype_escape' => Configuration::get('CUSTOMPOPUP_ESCAPE'),
+            'version' => self::getVersion(),
+            'version' => self::getVersion(),
+            'version' => self::getVersion(),
         );
     }
 

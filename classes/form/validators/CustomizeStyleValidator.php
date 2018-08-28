@@ -68,9 +68,5 @@ class CustomizeStyleValidator extends PrestacraftValidatorCore
         if (!$this->validation->getError($this->module->l('Content top padding'))) {
             Configuration::updateValue('CUSTOMPOPUP_TOP_PADDING', $this->getField('CUSTOMPOPUP_TOP_PADDING'));
         }
-
-        if (!$this->validation->getAllErrors() || count($this->validation->getAllErrors()) == 0) {
-            $this->setSuccess(true);
-        }
     }
 }

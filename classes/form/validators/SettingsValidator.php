@@ -52,9 +52,12 @@ class SettingsValidator extends PrestacraftValidatorCore
             }
         }
 
-        Configuration::updateValue('CUSTOMPOPUP_COOKIE', $this->getField('CUSTOMPOPUP_COOKIE'));
-        Configuration::updateValue('CUSTOMPOPUP_DELAY', $this->getField('CUSTOMPOPUP_DELAY'));
+        if (!$this->validation->getError($this->module->l('Cookie length'))) {
+            Configuration::updateValue('CUSTOMPOPUP_COOKIE', $this->getField('CUSTOMPOPUP_COOKIE'));
+        }
 
-        $this->setSuccess(true);
+        if (!$this->validation->getError($this->module->l('Popup delay'))) {
+            Configuration::updateValue('CUSTOMPOPUP_DELAY', $this->getField('CUSTOMPOPUP_DELAY'));
+        }
     }
 }

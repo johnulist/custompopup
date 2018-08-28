@@ -39,15 +39,15 @@ class CloseAndFooterForm extends PrestaCraftFormCore
 
         $types = array(
             array(
-                'id' => 'overlay',
+                'id' => 'OVERLAY',
                 'name' => $this->module->l('Overlay (clicking outside popup)')
             ),
             array(
-                'id' => 'button',
+                'id' => 'BUTTON',
                 'name' => $this->module->l('Button (click [X] button or footer button)')
             ),
             array(
-                'id' => 'escape',
+                'id' => 'ESCAPE',
                 'name' => $this->module->l('Clicking ESC key')
             ),
         );
@@ -103,6 +103,12 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                         ),
                     ),
                     array(
+                        'type' => 'color',
+                        'label' => $this->module->l('Footer background color'),
+                        'name' => 'CUSTOMPOPUP_FOOTER_BACKGROUND',
+                        'class' => 'leftfix',
+                    ),
+                    array(
                         'type'    => 'select',
                         'name'    => 'CUSTOMPOPUP_FOOTER_TYPE',
                         'label'   => $this->module->l('Footer type'),
@@ -134,7 +140,7 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                     ),
                     array(
                         'type' => 'switch',
-                        'label' => $this->module->l('Enable [Button 1]'),
+                        'label' => $this->module->l('[Button 1] Enable'),
                         'name' => 'CUSTOMPOPUP_BUTTON1_ENABLED',
                         'is_bool' => true,
                         'values' => array(
@@ -156,14 +162,12 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                         'name' => 'CUSTOMPOPUP_BUTTON1_TEXT',
                         'lang' => true,
                     ),
-
                     array(
                         'type' => 'color',
                         'label' => $this->module->l('[Button 1] Background color'),
                         'name' => 'CUSTOMPOPUP_BUTTON1_BACKGROUND',
                         'class' => 'leftfix',
                     ),
-
                     array(
                         'type' => 'text',
                         'label' => $this->module->l('[Button 1] URL'),
@@ -177,7 +181,7 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                     ),
                     array(
                         'type' => 'switch',
-                        'label' => $this->module->l('Enable [Button 2]'),
+                        'label' => $this->module->l('[Button 2] Enable'),
                         'name' => 'CUSTOMPOPUP_BUTTON2_ENABLED',
                         'is_bool' => true,
                         'values' => array(
@@ -229,21 +233,25 @@ class CloseAndFooterForm extends PrestaCraftFormCore
     {
         $fields = array();
 
-        $fields['closetype_overlay'] = Configuration::get('CUSTOMPOPUP_OVERLAY');
-        $fields['closetype_button'] = Configuration::get('CUSTOMPOPUP_BUTTON');
-        $fields['closetype_escape'] = Configuration::get('CUSTOMPOPUP_ESCAPE');
+        $fields['closetype_OVERLAY'] = Configuration::get('CUSTOMPOPUP_OVERLAY');
+        $fields['closetype_BUTTON'] = Configuration::get('CUSTOMPOPUP_BUTTON');
+        $fields['closetype_ESCAPE'] = Configuration::get('CUSTOMPOPUP_ESCAPE');
         $fields['CUSTOMPOPUP_FOOTER'] = Configuration::get('CUSTOMPOPUP_FOOTER');
-        $fields['CUSTOMPOPUP_BUTTON1_TEXT'] = Configuration::get('CUSTOMPOPUP_BUTTON1_TEXT');
-        $fields['CUSTOMPOPUP_BUTTON2_TEXT'] = Configuration::get('CUSTOMPOPUP_BUTTON2_TEXT');
-        $fields['CUSTOMPOPUP_BUTTON1_URL'] = Configuration::get('CUSTOMPOPUP_BUTTON1_URL');
-        $fields['CUSTOMPOPUP_BUTTON2_URL'] = Configuration::get('CUSTOMPOPUP_BUTTON2_URL');
         $fields['CUSTOMPOPUP_BUTTON1_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_BUTTON1_BACKGROUND');
         $fields['CUSTOMPOPUP_BUTTON2_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_BUTTON2_BACKGROUND');
-        $fields['CUSTOMPOPUP_FOOTER_TEXT'] = Configuration::get('CUSTOMPOPUP_FOOTER_TEXT');
         $fields['CUSTOMPOPUP_BUTTON_ALIGN'] = Configuration::get('CUSTOMPOPUP_BUTTON_ALIGN');
         $fields['CUSTOMPOPUP_FOOTER_TYPE'] = Configuration::get('CUSTOMPOPUP_FOOTER_TYPE');
         $fields['CUSTOMPOPUP_BUTTON1_ENABLED'] = Configuration::get('CUSTOMPOPUP_BUTTON1_ENABLED');
         $fields['CUSTOMPOPUP_BUTTON2_ENABLED'] = Configuration::get('CUSTOMPOPUP_BUTTON2_ENABLED');
+        $fields['CUSTOMPOPUP_FOOTER_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_FOOTER_BACKGROUND');
+
+        foreach (Language::getLanguages(true) as $lang) {
+            $fields['CUSTOMPOPUP_BUTTON1_URL'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON1_URL_'.$lang["id_lang"]);
+            $fields['CUSTOMPOPUP_BUTTON2_URL'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON2_URL_'.$lang["id_lang"]);
+            $fields['CUSTOMPOPUP_FOOTER_TEXT'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_FOOTER_TEXT_'.$lang["id_lang"]);
+            $fields['CUSTOMPOPUP_BUTTON1_TEXT'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON1_TEXT_'.$lang["id_lang"]);
+            $fields['CUSTOMPOPUP_BUTTON2_TEXT'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON2_TEXT_'.$lang["id_lang"]);
+        }
 
         return $fields;
     }

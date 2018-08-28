@@ -29,6 +29,7 @@ require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CustomizeStyleForm.php';
 require_once _PS_MODULE_DIR_.'/custompopup/classes/form/DisplayForm.php';
 require_once _PS_MODULE_DIR_.'/custompopup/classes/form/SettingsForm.php';
 // Validators
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CloseAndFooterValidator.php';
 require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CustomizeCloseValidator.php';
 require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CustomizeStyleValidator.php';
 require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/DisplayValidator.php';
@@ -198,10 +199,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
         if ($settingsValidator->getErrors()) {
             $this->errors = $settingsValidator->getErrors();
-        } else {
-            if ($settingsValidator->getSuccess()) {
-                $this->success = true;
-            }
         }
 
         $customizeStyleData = array(
@@ -217,10 +214,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
         if ($customizeStyleValidator->getErrors()) {
             $this->errors = $customizeStyleValidator->getErrors();
-        }
-
-        if ($customizeStyleValidator->getSuccess()) {
-            $this->success = true;
         }
 
         $custoimzeCloseData = array(
@@ -239,10 +232,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             $this->errors = $customizeCloseValidator->getErrors();
         }
 
-        if ($customizeCloseValidator->getSuccess()) {
-            $this->success = true;
-        }
-
         $displayData = array();
 
         foreach ($_POST as $key => $value) {
@@ -257,7 +246,62 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         $displayValidator->setData($displayData, true);
         $displayValidator->validate();
 
-        if ($displayValidator->getSuccess()) {
+        $closeAndFooterDataCloseType = array();
+
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, 'closetype_') === 0) {
+                if ($value) {
+                    $closeAndFooterDataCloseType[$key] = 1;
+                }
+            }
+        }
+
+        $closeAndFooterLangData = array();
+
+        foreach (Language::getLanguages(true) as $la) {
+            $closeAndFooterLangData['CUSTOMPOPUP_BUTTON1_TEXT_'.$la['id_lang']] =
+                Tools::getValue('CUSTOMPOPUP_BUTTON1_TEXT_'.$la['id_lang']);
+
+            $closeAndFooterLangData['CUSTOMPOPUP_BUTTON2_TEXT_'.$la['id_lang']] =
+                Tools::getValue('CUSTOMPOPUP_BUTTON2_TEXT_'.$la['id_lang']);
+
+            $closeAndFooterLangData['CUSTOMPOPUP_FOOTER_TEXT_'.$la['id_lang']] =
+                Tools::getValue('CUSTOMPOPUP_FOOTER_TEXT_'.$la['id_lang']);
+
+            $closeAndFooterLangData['CUSTOMPOPUP_BUTTON1_URL_'.$la['id_lang']] =
+                Tools::getValue('CUSTOMPOPUP_BUTTON1_URL_'.$la['id_lang']);
+
+            $closeAndFooterLangData['CUSTOMPOPUP_BUTTON2_URL_'.$la['id_lang']] =
+                Tools::getValue('CUSTOMPOPUP_BUTTON2_URL_'.$la['id_lang']);
+        }
+
+        $closeAndFooterData = array(
+            'CUSTOMPOPUP_FOOTER' => Tools::getValue('CUSTOMPOPUP_FOOTER'),
+            'CUSTOMPOPUP_BUTTON1_TEXT' => Tools::getValue('CUSTOMPOPUP_BUTTON1_TEXT'),
+            'CUSTOMPOPUP_BUTTON2_TEXT' => Tools::getValue('CUSTOMPOPUP_BUTTON2_TEXT'),
+            'CUSTOMPOPUP_BUTTON1_URL' => Tools::getValue('CUSTOMPOPUP_BUTTON1_URL'),
+            'CUSTOMPOPUP_BUTTON2_URL' => Tools::getValue('CUSTOMPOPUP_BUTTON2_URL'),
+            'CUSTOMPOPUP_BUTTON1_BACKGROUND' => Tools::getValue('CUSTOMPOPUP_BUTTON1_BACKGROUND'),
+            'CUSTOMPOPUP_BUTTON2_BACKGROUND' => Tools::getValue('CUSTOMPOPUP_BUTTON2_BACKGROUND'),
+            'CUSTOMPOPUP_FOOTER_TEXT' => Tools::getValue('CUSTOMPOPUP_FOOTER_TEXT'),
+            'CUSTOMPOPUP_BUTTON_ALIGN' => Tools::getValue('CUSTOMPOPUP_BUTTON_ALIGN'),
+            'CUSTOMPOPUP_FOOTER_TYPE' => Tools::getValue('CUSTOMPOPUP_FOOTER_TYPE'),
+            'CUSTOMPOPUP_BUTTON1_ENABLED' => Tools::getValue('CUSTOMPOPUP_BUTTON1_ENABLED'),
+            'CUSTOMPOPUP_BUTTON2_ENABLED' => Tools::getValue('CUSTOMPOPUP_BUTTON2_ENABLED'),
+            'CUSTOMPOPUP_FOOTER_BACKGROUND' => Tools::getValue('CUSTOMPOPUP_FOOTER_BACKGROUND'),
+        );
+
+        $closeAndFooterDataAll = array_merge($closeAndFooterDataCloseType, $closeAndFooterData, $closeAndFooterLangData);
+
+        $closeAndFooterValidator = new CloseAndFooterValidator($this, 'CloseAndFooterForm');
+        $closeAndFooterValidator->setData($closeAndFooterDataAll);
+        $closeAndFooterValidator->validate();
+
+        if ($closeAndFooterValidator->getErrors()) {
+            $this->errors = $closeAndFooterValidator->getErrors();
+        }
+
+        if (!$this->errors) {
             $this->success = true;
         }
 

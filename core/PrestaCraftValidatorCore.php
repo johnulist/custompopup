@@ -10,7 +10,6 @@ abstract class PrestaCraftValidatorCore
     protected $validation;
     private $data;
     private $errors;
-    private $success = false;
     private $allowEmpty = false;
 
     public function __construct($moduleObject, $formName)
@@ -85,16 +84,6 @@ abstract class PrestaCraftValidatorCore
 
             $this->setErrors($newLineErrors);
         }
-    }
-
-    public function setSuccess($success)
-    {
-        $this->success = $success;
-    }
-
-    public function getSuccess()
-    {
-        return $this->success;
     }
 
     public function setErrors($errors)

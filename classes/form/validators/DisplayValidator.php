@@ -23,7 +23,5 @@ class DisplayValidator extends PrestacraftValidatorCore
         foreach ($this->getData() as $hook => $value) {
             ResponsivePopupPages::setHookValue($hook, $value);
         }
-
-        $this->setSuccess(true);
     }
 }
