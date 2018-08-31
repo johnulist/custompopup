@@ -41,14 +41,12 @@ class SettingsValidator extends PrestacraftValidatorCore
 
         // if no errors occured
         if (!$this->validation->getError($this->module->l('Popup content'))) {
-            Db::getInstance()->execute('TRUNCATE TABLE `' . _DB_PREFIX_ . 'responsive_popup`');
-
             foreach (Language::getLanguages(true) as $lang) {
-                $popup = new ResponsivePopup();
-                $popup->id_shop = Context::getContext()->shop->id;
-                $popup->id_lang = $lang['id_lang'];
-                $popup->content = $this->getField('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']);
-                $popup->save();
+                Configuration::updateValue("CUSTOMPOPUP_CONTENT", array(
+                        $lang['id_lang'] => $this->getField('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),
+                        $lang['id_lang'] => $this->getField('CUSTOMPOPUP_CONTENT_'.$lang['id_lang'])
+                    )
+                );
             }
         }
 

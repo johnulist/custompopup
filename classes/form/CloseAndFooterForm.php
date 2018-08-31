@@ -43,10 +43,6 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                 'name' => $this->module->l('Overlay (clicking outside popup)')
             ),
             array(
-                'id' => 'BUTTON',
-                'name' => $this->module->l('Button (click [X] button or footer button)')
-            ),
-            array(
                 'id' => 'ESCAPE',
                 'name' => $this->module->l('Clicking ESC key')
             ),
@@ -77,11 +73,14 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                     array(
                         'type'    => 'checkbox',
                         'name'    => 'closetype',
-                        'label'   => $this->module->l('How can user close the popup?'),
+                        'label'   => $this->module->l('Additional close methods'),
                         'values'  => array(
                             'query' => $types,
                             'id'    => 'id',
                             'name'  => 'name'
+                        ),
+                        'desc'    => $this->module->l(
+                            'By default user can close popup by clicking [X] button only or footer buttons (if enabled). You may allow user to close popup by clicking outside popup or escape button.'
                         ),
                     ),
                     array(
@@ -130,8 +129,8 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                     ),
                     array(
                         'type'    => 'select',
-                        'name'    => 'CUSTOMPOPUP_BUTTON_ALIGN',
-                        'label'   => $this->module->l('Button alignment'),
+                        'name'    => 'CUSTOMPOPUP_FOOTER_ALIGN',
+                        'label'   => $this->module->l('Footer alignment'),
                         'options'  => array(
                             'query' => $align,
                             'id'    => 'id',
@@ -234,23 +233,36 @@ class CloseAndFooterForm extends PrestaCraftFormCore
         $fields = array();
 
         $fields['closetype_OVERLAY'] = Configuration::get('CUSTOMPOPUP_OVERLAY');
-        $fields['closetype_BUTTON'] = Configuration::get('CUSTOMPOPUP_BUTTON');
         $fields['closetype_ESCAPE'] = Configuration::get('CUSTOMPOPUP_ESCAPE');
         $fields['CUSTOMPOPUP_FOOTER'] = Configuration::get('CUSTOMPOPUP_FOOTER');
         $fields['CUSTOMPOPUP_BUTTON1_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_BUTTON1_BACKGROUND');
         $fields['CUSTOMPOPUP_BUTTON2_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_BUTTON2_BACKGROUND');
-        $fields['CUSTOMPOPUP_BUTTON_ALIGN'] = Configuration::get('CUSTOMPOPUP_BUTTON_ALIGN');
+        $fields['CUSTOMPOPUP_FOOTER_ALIGN'] = Configuration::get('CUSTOMPOPUP_FOOTER_ALIGN');
         $fields['CUSTOMPOPUP_FOOTER_TYPE'] = Configuration::get('CUSTOMPOPUP_FOOTER_TYPE');
         $fields['CUSTOMPOPUP_BUTTON1_ENABLED'] = Configuration::get('CUSTOMPOPUP_BUTTON1_ENABLED');
         $fields['CUSTOMPOPUP_BUTTON2_ENABLED'] = Configuration::get('CUSTOMPOPUP_BUTTON2_ENABLED');
         $fields['CUSTOMPOPUP_FOOTER_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_FOOTER_BACKGROUND');
 
         foreach (Language::getLanguages(true) as $lang) {
-            $fields['CUSTOMPOPUP_BUTTON1_URL'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON1_URL_'.$lang["id_lang"]);
-            $fields['CUSTOMPOPUP_BUTTON2_URL'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON2_URL_'.$lang["id_lang"]);
-            $fields['CUSTOMPOPUP_FOOTER_TEXT'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_FOOTER_TEXT_'.$lang["id_lang"]);
-            $fields['CUSTOMPOPUP_BUTTON1_TEXT'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON1_TEXT_'.$lang["id_lang"]);
-            $fields['CUSTOMPOPUP_BUTTON2_TEXT'][$lang["id_lang"]] = Configuration::get('CUSTOMPOPUP_BUTTON2_TEXT_'.$lang["id_lang"]);
+            $fields['CUSTOMPOPUP_BUTTON1_URL'][$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON1_URL', $lang["id_lang"]
+            );
+
+            $fields['CUSTOMPOPUP_BUTTON2_URL'][$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON2_URL', $lang["id_lang"]
+            );
+
+            $fields['CUSTOMPOPUP_FOOTER_TEXT'][$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_FOOTER_TEXT', $lang["id_lang"]
+            );
+
+            $fields['CUSTOMPOPUP_BUTTON1_TEXT'][$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON1_TEXT', $lang["id_lang"]
+            );
+
+            $fields['CUSTOMPOPUP_BUTTON2_TEXT'][$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON2_TEXT', $lang["id_lang"]
+            );
         }
 
         return $fields;

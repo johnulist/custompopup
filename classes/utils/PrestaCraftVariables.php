@@ -33,7 +33,17 @@ class PrestaCraftVariables
 
     public static function getTemplateVars()
     {
-        return array(
+        $closeType = "'button',";
+
+        if (Configuration::get('CUSTOMPOPUP_OVERLAY')) {
+            $closeType .= "'overlay',";
+        }
+
+        if (Configuration::get('CUSTOMPOPUP_ESCAPE')) {
+            $closeType .= "'escape',";
+        }
+
+        $array = array(
             'popup_cookie' => Configuration::get('CUSTOMPOPUP_COOKIE'),
             'popup_delay' => Configuration::get('CUSTOMPOPUP_DELAY'),
             'popup_enabled' => Configuration::get('CUSTOMPOPUP_ENABLED'),
@@ -47,13 +57,44 @@ class PrestaCraftVariables
             'button_top_padding' => Configuration::get('CUSTOMPOPUP_BUTTON_TOP_PADDING'),
             'button_position' => Configuration::get('CUSTOMPOPUP_BUTTON_POSITION'),
             'version' => self::getVersion(),
-            'closetype_overlay' => Configuration::get('CUSTOMPOPUP_OVERLAY'),
-            'closetype_button' => Configuration::get('CUSTOMPOPUP_BUTTON'),
-            'closetype_escape' => Configuration::get('CUSTOMPOPUP_ESCAPE'),
-            'version' => self::getVersion(),
-            'version' => self::getVersion(),
-            'version' => self::getVersion(),
+            'closetype' => rtrim($closeType, ','),
+            'footer' => Configuration::get('CUSTOMPOPUP_FOOTER'),
+            'footer_background' => Configuration::get('CUSTOMPOPUP_FOOTER_BACKGROUND'),
+            'footer_type' => Configuration::get('CUSTOMPOPUP_FOOTER_TYPE'),
+            'footer_align' => Configuration::get('CUSTOMPOPUP_FOOTER_ALIGN'),
+            'footer_button1_enabled' => Configuration::get('CUSTOMPOPUP_BUTTON1_ENABLED'),
+            'footer_button2_enabled' => Configuration::get('CUSTOMPOPUP_BUTTON2_ENABLED'),
+            'footer_button1_background' => Configuration::get('CUSTOMPOPUP_BUTTON1_BACKGROUND'),
+            'footer_button2_background' => Configuration::get('CUSTOMPOPUP_BUTTON2_BACKGROUND'),
         );
+
+        $footer = array();
+
+        foreach (Language::getLanguages(true) as $lang) {
+            $footer['footer_text_'.$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_FOOTER_TEXT', $lang["id_lang"]
+            );
+
+            $footer['button1_text_'.$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON1_TEXT', $lang["id_lang"]
+            );
+
+            $footer['button2_text_'.$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON2_TEXT', $lang["id_lang"]
+            );
+
+            $footer['button1_url_'.$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON1_URL', $lang["id_lang"]
+            );
+
+            $footer['button2_url_'.$lang["id_lang"]] = Configuration::get(
+                'CUSTOMPOPUP_BUTTON2_URL', $lang["id_lang"]
+            );
+        }
+
+        $array = array_merge($array, $footer);
+
+        return $array;
     }
 
     public static function getVersion()

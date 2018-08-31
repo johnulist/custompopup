@@ -29,6 +29,12 @@
     </div>
 {/if}
 
+{if isset($multistore)}
+    <div class="pc-alert pc-informations">
+        <small>You are running multistore. Please note that all settings will be saved
+            to currently selected shop.</small>
+    </div>
+{/if}
 
 <div role="tabpanel" class="prestacraft">
     <!-- Nav tabs -->
@@ -76,7 +82,8 @@
     <div class="col-md-8 col-lg-9 col-xs-12">
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="settings">{$TAB_SETTINGS}</div>
+            <div role="tabpanel" class="tab-pane active" id="settings">
+                {$TAB_SETTINGS}</div>
             <div role="tabpanel" class="tab-pane" id="customizestyle">
                 <div class="row">
                 <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_STYLE}</div>

@@ -10,6 +10,36 @@
     color: black !important;
 }
 
+.bootstrap .panel {
+    background: transparent !important;
+    position: static !important;
+}
+
+.bootstrap {
+    border-color: #eff1f2 !important;
+    box-shadow: none !important;
+}
+
+.tab-content {
+    background: #fff;
+}
+
+#customizestyle {
+    padding: 10px;
+}
+
+input[name="activateModule"] {
+    margin-top: 30px !important;
+}
+
+.shop-list-title {
+    background: white;
+}
+
+#footer {
+    background-color: rgba(0,0,0,0.8) !important;
+}
+
 .alert {
     position: absolute !important;
     right: 15px;
@@ -22,18 +52,22 @@
     text-align: center;
     font-size: 14px;
     cursor: pointer;
+    margin-bottom: 15px;
 }
 
 .pc-success {
     background: #31A1C5;
-    margin-bottom: 15px;
     color: white;
 }
 
 .pc-errors {
     background: #b23a48;
-    margin-bottom: 15px;
     color: white;
+}
+
+.pc-informations {
+    color: white;
+    background: #99710c;
 }
 
 .prestacraft .nav-tabs>li.active>a, .prestacraft .nav-tabs>li.active>a:hover, .prestacraft .nav-tabs>li.active>a:focus {
@@ -90,5 +124,5 @@
 }
 
 .mColorPicker {
-    width: 70px !important;
+    width: 100px !important;
 }

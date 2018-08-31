@@ -19,7 +19,6 @@ if (!defined('_PS_VERSION_') || !defined('_PS_MODULE_DIR_')) {
 require_once _PS_MODULE_DIR_.'/custompopup/core/PrestaCraftModuleInterface.php';
 
 // Database
-require_once _PS_MODULE_DIR_.'/custompopup/classes/db/ResponsivePopup.php';
 require_once _PS_MODULE_DIR_.'/custompopup/classes/db/ResponsivePopupPages.php';
 
 // Forms
@@ -115,7 +114,6 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         }
 
         return parent::install() &&
-            ResponsivePopup::createTable() &&
             ResponsivePopupPages::createTable() &&
             ResponsivePopupPages::fixtures();
     }
@@ -151,13 +149,17 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR')
         );
         $this->context->smarty->assign('VERSION_CHECKER', $data);
-        $this->context->smarty->assign('POS', trim(Tools::getValue('pos')));
 
+        // Tabs
         $this->context->smarty->assign('TAB_SETTINGS', $this->renderSettings());
         $this->context->smarty->assign('TAB_CUSTOMIZE_STYLE', $this->renderCustomizeStyle());
         $this->context->smarty->assign('TAB_CUSTOMIZE_CLOSE', $this->renderCustomizeClose());
         $this->context->smarty->assign('TAB_CLOSE_AND_FOOTER', $this->renderCloseAndFooter());
         $this->context->smarty->assign('TAB_DISPLAY', $this->renderDisplay());
+
+        if (Configuration::get("PS_MULTISHOP_FEATURE_ACTIVE")) {
+            $this->context->smarty->assign('multistore', true);
+        }
 
         if ($this->errors) {
             $this->context->smarty->assign('errors', $this->errors);
@@ -284,7 +286,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             'CUSTOMPOPUP_BUTTON1_BACKGROUND' => Tools::getValue('CUSTOMPOPUP_BUTTON1_BACKGROUND'),
             'CUSTOMPOPUP_BUTTON2_BACKGROUND' => Tools::getValue('CUSTOMPOPUP_BUTTON2_BACKGROUND'),
             'CUSTOMPOPUP_FOOTER_TEXT' => Tools::getValue('CUSTOMPOPUP_FOOTER_TEXT'),
-            'CUSTOMPOPUP_BUTTON_ALIGN' => Tools::getValue('CUSTOMPOPUP_BUTTON_ALIGN'),
+            'CUSTOMPOPUP_FOOTER_ALIGN' => Tools::getValue('CUSTOMPOPUP_FOOTER_ALIGN'),
             'CUSTOMPOPUP_FOOTER_TYPE' => Tools::getValue('CUSTOMPOPUP_FOOTER_TYPE'),
             'CUSTOMPOPUP_BUTTON1_ENABLED' => Tools::getValue('CUSTOMPOPUP_BUTTON1_ENABLED'),
             'CUSTOMPOPUP_BUTTON2_ENABLED' => Tools::getValue('CUSTOMPOPUP_BUTTON2_ENABLED'),
@@ -301,8 +303,10 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             $this->errors = $closeAndFooterValidator->getErrors();
         }
 
-        if (!$this->errors) {
-            $this->success = true;
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!$this->errors) {
+                $this->success = true;
+            }
         }
 
         return '';
@@ -360,8 +364,9 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     {
         $langContent = array();
 
-        foreach (ResponsivePopup::getContentForLanguages() as $langID => $content) {
-            $langContent['content_'.$langID] = trim(json_encode($content), '"');
+        foreach (Language::getLanguages(true) as $lang) {
+            $content = Configuration::get("CUSTOMPOPUP_CONTENT", $lang["id_lang"]);
+            $langContent['content_'.$lang["id_lang"]] = trim(json_encode($content), '"');
         }
 
         $assign = PrestaCraftVariables::getTemplateVars();

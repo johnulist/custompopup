@@ -62,13 +62,12 @@ class CloseAndFooterValidator extends PrestacraftValidatorCore
         }
 
         Configuration::updateValue('CUSTOMPOPUP_FOOTER', $this->getField('CUSTOMPOPUP_FOOTER'));
-        Configuration::updateValue('CUSTOMPOPUP_BUTTON_ALIGN', $this->getField('CUSTOMPOPUP_BUTTON_ALIGN'));
+        Configuration::updateValue('CUSTOMPOPUP_FOOTER_ALIGN', $this->getField('CUSTOMPOPUP_FOOTER_ALIGN'));
         Configuration::updateValue('CUSTOMPOPUP_FOOTER_TYPE', $this->getField('CUSTOMPOPUP_FOOTER_TYPE'));
         Configuration::updateValue('CUSTOMPOPUP_BUTTON1_ENABLED', $this->getField('CUSTOMPOPUP_BUTTON1_ENABLED'));
         Configuration::updateValue('CUSTOMPOPUP_BUTTON2_ENABLED', $this->getField('CUSTOMPOPUP_BUTTON2_ENABLED'));
 
         Configuration::updateValue('CUSTOMPOPUP_OVERLAY', 0);
-        Configuration::updateValue('CUSTOMPOPUP_BUTTON', 0);
         Configuration::updateValue('CUSTOMPOPUP_ESCAPE', 0);
 
         foreach ($this->getData() as $key =>$value) {
@@ -76,8 +75,8 @@ class CloseAndFooterValidator extends PrestacraftValidatorCore
                 $name = 'CUSTOMPOPUP_';
                 $nameFull = $name.str_replace("closetype_", "", $key);
 
-                if ($value) {
-                    Configuration::updateValue($nameFull, '1');
+                if ($value == 1) {
+                    Configuration::updateValue($nameFull, 1);
                 }
             }
         }
@@ -88,23 +87,39 @@ class CloseAndFooterValidator extends PrestacraftValidatorCore
                     'CUSTOMPOPUP_BUTTON1_URL_'.$lang["id_lang"],
                     $this->getField('CUSTOMPOPUP_BUTTON1_URL_'.$lang["id_lang"])
                 );
-            }
 
-            if (!$this->validation->getError($this->module->l('[Button 2] URL ('.$lang["iso_code"].')'))) {
-                Configuration::updateValue(
-                    'CUSTOMPOPUP_BUTTON2_URL_'.$lang["id_lang"],
-                    $this->getField('CUSTOMPOPUP_BUTTON2_URL_'.$lang["id_lang"])
+                Configuration::updateValue("CUSTOMPOPUP_BUTTON1_URL", array(
+                        $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON1_URL_'.$lang['id_lang']),
+                        $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON1_URL_'.$lang['id_lang'])
+                    )
                 );
             }
 
-            Configuration::updateValue('CUSTOMPOPUP_BUTTON1_TEXT_'.$lang["id_lang"],
-                $this->getField('CUSTOMPOPUP_BUTTON1_TEXT_'.$lang["id_lang"]));
+            if (!$this->validation->getError($this->module->l('[Button 2] URL ('.$lang["iso_code"].')'))) {
+                Configuration::updateValue("CUSTOMPOPUP_BUTTON2_URL", array(
+                        $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON2_URL_'.$lang['id_lang']),
+                        $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON2_URL_'.$lang['id_lang'])
+                    )
+                );
+            }
 
-            Configuration::updateValue('CUSTOMPOPUP_BUTTON2_TEXT_'.$lang["id_lang"],
-                $this->getField('CUSTOMPOPUP_BUTTON2_TEXT_'.$lang["id_lang"]));
+            Configuration::updateValue("CUSTOMPOPUP_BUTTON1_TEXT", array(
+                    $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON1_TEXT_'.$lang['id_lang']),
+                    $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON1_TEXT_'.$lang['id_lang'])
+                )
+            );
 
-            Configuration::updateValue('CUSTOMPOPUP_FOOTER_TEXT_'.$lang["id_lang"],
-                $this->getField('CUSTOMPOPUP_FOOTER_TEXT_'.$lang["id_lang"]));
+            Configuration::updateValue("CUSTOMPOPUP_BUTTON2_TEXT", array(
+                    $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON2_TEXT_'.$lang['id_lang']),
+                    $lang['id_lang'] => $this->getField('CUSTOMPOPUP_BUTTON2_TEXT_'.$lang['id_lang'])
+                )
+            );
+
+            Configuration::updateValue("CUSTOMPOPUP_FOOTER_TEXT", array(
+                    $lang['id_lang'] => $this->getField('CUSTOMPOPUP_FOOTER_TEXT_'.$lang['id_lang']),
+                    $lang['id_lang'] => $this->getField('CUSTOMPOPUP_FOOTER_TEXT_'.$lang['id_lang'])
+                )
+            );
         }
 
     }

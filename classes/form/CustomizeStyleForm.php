@@ -41,7 +41,8 @@ class CustomizeStyleForm extends PrestaCraftFormCore
                         'label' => $this->module->l('Background color'),
                         'name' => 'CUSTOMPOPUP_BACK_COLOR',
                         'class' => 'leftfix',
-                        'hint' => $this->module->l('Outside the popup')
+                        'hint' => $this->module->l('Outside the popup'),
+                        'desc' => $this->module->l('Leave empty to apply transparent background'),
                     ),
                     array(
                         'type' => 'text',

@@ -91,10 +91,8 @@ class SettingsForm extends PrestaCraftFormCore
         $languages = Language::getLanguages(true);
         $fields = array();
 
-        $langContent = $this->module->getContentForLanguages();
-
         foreach ($languages as $lang) {
-            @$fields['CUSTOMPOPUP_CONTENT'][$lang['id_lang']] = $langContent[$lang['id_lang']];
+            @$fields['CUSTOMPOPUP_CONTENT'][$lang['id_lang']] = Configuration::get("CUSTOMPOPUP_CONTENT", $lang['id_lang']);
         }
 
         $fields['CUSTOMPOPUP_ENABLED'] = Configuration::get('CUSTOMPOPUP_ENABLED');

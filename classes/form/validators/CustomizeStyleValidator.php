@@ -25,11 +25,7 @@ class CustomizeStyleValidator extends PrestacraftValidatorCore
 
         $this->validation->validate(
             $this->module->l('Background color'),
-            $this->getField('CUSTOMPOPUP_BACK_COLOR'),
-            array(
-                'ishex' => 1,
-                'notempty' => 1
-            )
+            $this->getField('CUSTOMPOPUP_BACK_COLOR')
         );
 
         $this->validation->validate(

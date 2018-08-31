@@ -4,8 +4,7 @@
 	background: transparent;
 	cursor: pointer;
 	position: absolute;
-	right: 10px;
-	top: 15px;
+	right: 15px !important;
 	font-size: 26px;
 	font-weight: bold;
 	font-family: monospace;
@@ -18,4 +17,12 @@ div.popup img {
 
 .tingle-modal__close {
 	display: none;
+}
+
+.prestacraft-special-text {
+	border: none;
+	outline: none !important;
+	background: transparent;
+	display: block;
+	width: 100%;
 }
