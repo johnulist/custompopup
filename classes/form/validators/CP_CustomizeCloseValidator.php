@@ -1,18 +1,18 @@
 <?php
 
-require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftValidatorCore.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/utils/Validation.php';
+require_once _PS_MODULE_DIR_.'custompopup/core/CP_PrestaCraftValidatorCore.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/utils/CP_Validation.php';
 
-class CustomizeCloseValidator extends PrestacraftValidatorCore
+class CP_CustomizeCloseValidator extends CP_PrestaCraftValidatorCore
 {
     public function __construct($moduleObject, $formName)
     {
         parent::__construct($moduleObject, $formName);
     }
 
-    protected function processValidation()
+    protected function processCP_Validation()
     {
-        $this->validation = new Validation($this->module);
+        $this->validation = new CP_Validation($this->module);
 
         $this->validation->validate(
             $this->module->l('Color'),

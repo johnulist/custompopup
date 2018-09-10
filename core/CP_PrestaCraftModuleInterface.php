@@ -16,7 +16,7 @@
  *
  * Interface PrestacraftModuleInterface
  */
-interface PrestacraftModuleInterface
+interface CP_PrestacraftModuleInterface
 {
     public function install();
 

@@ -11,7 +11,7 @@
  * @license    http://prestacraft.com/license
  */
 
-class PrestaCraftVariables
+class CP_PrestaCraftVariables
 {
     public static function setDefaultValues()
     {

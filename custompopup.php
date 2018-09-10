@@ -16,29 +16,29 @@ if (!defined('_PS_VERSION_') || !defined('_PS_MODULE_DIR_')) {
 }
 
 // Core
-require_once _PS_MODULE_DIR_.'/custompopup/core/PrestaCraftModuleInterface.php';
+require_once _PS_MODULE_DIR_.'/custompopup/core/CP_PrestaCraftModuleInterface.php';
 
 // Database
-require_once _PS_MODULE_DIR_.'/custompopup/classes/db/ResponsivePopupPages.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/db/CP_ResponsivePopupPages.php';
 
 // Forms
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CloseAndFooterForm.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CustomizeCloseForm.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CustomizeStyleForm.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/DisplayForm.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/SettingsForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CP_CloseAndFooterForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CP_CustomizeCloseForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CP_CustomizeStyleForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CP_DisplayForm.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/CP_SettingsForm.php';
 // Validators
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CloseAndFooterValidator.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CustomizeCloseValidator.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CustomizeStyleValidator.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/DisplayValidator.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/SettingsValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CP_CloseAndFooterValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CP_CustomizeCloseValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CP_CustomizeStyleValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CP_DisplayValidator.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/form/validators/CP_SettingsValidator.php';
 
 // Utils
-require_once _PS_MODULE_DIR_.'/custompopup/classes/utils/PrestaCraftHooks.php';
-require_once _PS_MODULE_DIR_.'/custompopup/classes/utils/PrestaCraftVariables.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/utils/CP_PrestaCraftHooks.php';
+require_once _PS_MODULE_DIR_.'/custompopup/classes/utils/CP_PrestaCraftVariables.php';
 
-class CustomPopup extends Module implements PrestaCraftModuleInterface
+class CustomPopup extends Module implements CP_PrestaCraftModuleInterface
 {
     private $errors;
     private $success = false;
@@ -97,11 +97,11 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             Configuration::updateValue($content, $lang['name']);
         }
 
-        PrestaCraftVariables::setDefaultValues();
+        CP_PrestaCraftVariables::setDefaultValues();
 
         return parent::install() &&
-            ResponsivePopupPages::createTable() &&
-            ResponsivePopupPages::fixtures();
+            CP_ResponsivePopupPages::createTable() &&
+            CP_ResponsivePopupPages::fixtures();
     }
 
     public function uninstall()
@@ -109,7 +109,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
         if (!parent::uninstall()) {
             return false;
         }
-        ResponsivePopupPages::drop();
+        CP_ResponsivePopupPages::drop();
         return true;
     }
 
@@ -136,7 +136,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR')
         );
         $this->context->smarty->assign('VERSION_CHECKER', $data);
-        $this->context->smarty->assign('IF_REQUIRE_HOOK_UPDATE', PrestaCraftHooks::ifRequireHookUpdate());
+        $this->context->smarty->assign('IF_REQUIRE_HOOK_UPDATE', CP_PrestaCraftHooks::ifRequireHookUpdate());
 
         // Tabs
         $this->context->smarty->assign('TAB_SETTINGS', $this->renderSettings());
@@ -170,7 +170,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     public function postProcess()
     {
         if (Tools::isSubmit('submitHookUpdate')) {
-            PrestaCraftHooks::updateHooks();
+            CP_PrestaCraftHooks::updateHooks();
         } else {
             $settingsData = array(
                 'CUSTOMPOPUP_ENABLED' => Tools::getValue('CUSTOMPOPUP_ENABLED'),
@@ -186,12 +186,12 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
             $settingsDataAll = array_merge($settingsData, $langContent);
 
-            $settingsValidator = new SettingsValidator($this, 'SettingsForm');
-            $settingsValidator->setData($settingsDataAll);
-            $settingsValidator->validate();
+            $CP_SettingsValidator = new CP_SettingsValidator($this, 'CP_SettingsForm');
+            $CP_SettingsValidator->setData($settingsDataAll);
+            $CP_SettingsValidator->validate();
 
-            if ($settingsValidator->getErrors()) {
-                $this->errors = $settingsValidator->getErrors();
+            if ($CP_SettingsValidator->getErrors()) {
+                $this->errors = $CP_SettingsValidator->getErrors();
             }
 
             $customizeStyleData = array(
@@ -201,12 +201,12 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
                 'CUSTOMPOPUP_TOP_PADDING' => Tools::getValue('CUSTOMPOPUP_TOP_PADDING'),
             );
 
-            $customizeStyleValidator = new CustomizeStyleValidator($this, 'CustomizeStyleForm');
-            $customizeStyleValidator->setData($customizeStyleData);
-            $customizeStyleValidator->validate();
+            $CP_CustomizeStyleValidator = new CP_CustomizeStyleValidator($this, 'CP_CustomizeStyleForm');
+            $CP_CustomizeStyleValidator->setData($customizeStyleData);
+            $CP_CustomizeStyleValidator->validate();
 
-            if ($customizeStyleValidator->getErrors()) {
-                $this->errors = $customizeStyleValidator->getErrors();
+            if ($CP_CustomizeStyleValidator->getErrors()) {
+                $this->errors = $CP_CustomizeStyleValidator->getErrors();
             }
 
             $custoimzeCloseData = array(
@@ -217,12 +217,12 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
                 'CUSTOMPOPUP_BUTTON_POSITION' => Tools::getValue('CUSTOMPOPUP_BUTTON_POSITION'),
             );
 
-            $customizeCloseValidator = new CustomizeCloseValidator($this, 'CustomizeCloseForm');
-            $customizeCloseValidator->setData($custoimzeCloseData);
-            $customizeCloseValidator->validate();
+            $CP_CustomizeCloseValidator = new CP_CustomizeCloseValidator($this, 'CP_CustomizeCloseForm');
+            $CP_CustomizeCloseValidator->setData($custoimzeCloseData);
+            $CP_CustomizeCloseValidator->validate();
 
-            if ($customizeCloseValidator->getErrors()) {
-                $this->errors = $customizeCloseValidator->getErrors();
+            if ($CP_CustomizeCloseValidator->getErrors()) {
+                $this->errors = $CP_CustomizeCloseValidator->getErrors();
             }
 
             $displayData = array();
@@ -235,9 +235,9 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
                 }
             }
 
-            $displayValidator = new DisplayValidator($this, 'DisplayForm');
-            $displayValidator->setData($displayData, true);
-            $displayValidator->validate();
+            $CP_DisplayValidator = new CP_DisplayValidator($this, 'CP_DisplayForm');
+            $CP_DisplayValidator->setData($displayData, true);
+            $CP_DisplayValidator->validate();
 
             $closeAndFooterDataCloseType = array();
 
@@ -286,12 +286,12 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
 
             $closeAndFooterDataAll = array_merge($closeAndFooterDataCloseType, $closeAndFooterData, $closeAndFooterLangData);
 
-            $closeAndFooterValidator = new CloseAndFooterValidator($this, 'CloseAndFooterForm');
-            $closeAndFooterValidator->setData($closeAndFooterDataAll);
-            $closeAndFooterValidator->validate();
+            $CP_CloseAndFooterValidator = new CP_CloseAndFooterValidator($this, 'CP_CloseAndFooterForm');
+            $CP_CloseAndFooterValidator->setData($closeAndFooterDataAll);
+            $CP_CloseAndFooterValidator->validate();
 
-            if ($closeAndFooterValidator->getErrors()) {
-                $this->errors = $closeAndFooterValidator->getErrors();
+            if ($CP_CloseAndFooterValidator->getErrors()) {
+                $this->errors = $CP_CloseAndFooterValidator->getErrors();
             }
 
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -307,31 +307,31 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     // ---- Forms [start] ----
     public function renderSettings()
     {
-        $form = new SettingsForm($this);
+        $form = new CP_SettingsForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderCustomizeStyle()
     {
-        $form = new CustomizeStyleForm($this);
+        $form = new CP_CustomizeStyleForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderCustomizeClose()
     {
-        $form = new CustomizeCloseForm($this);
+        $form = new CP_CustomizeCloseForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderCloseAndFooter()
     {
-        $form = new CloseAndFooterForm($this);
+        $form = new CP_CloseAndFooterForm($this);
         return $form->render()->buildForm();
     }
 
     public function renderDisplay()
     {
-        $form = new DisplayForm($this);
+        $form = new CP_DisplayForm($this);
         return $form->render()->buildForm();
     }
     // ---- Forms [end] ----
@@ -340,7 +340,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
     private function hookService()
     {
         $enabledHooks = array();
-        $rpp = new ResponsivePopupPages();
+        $rpp = new CP_ResponsivePopupPages();
 
         foreach ($rpp->getAll() as $item) {
             if ($item["enabled"] == 1) {
@@ -368,7 +368,7 @@ class CustomPopup extends Module implements PrestaCraftModuleInterface
             'tingle' => $this->_path.'views/js/tingle.min.js'
         );
 
-        $assign = PrestaCraftVariables::getTemplateVars();
+        $assign = CP_PrestaCraftVariables::getTemplateVars();
 
         $all = array_merge($langContent, $scripts, $assign);
         $this->context->smarty->assign($all);

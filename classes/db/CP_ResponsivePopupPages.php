@@ -11,9 +11,9 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once(_PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftHooks.php');
+require_once(_PS_MODULE_DIR_.'custompopup/classes/utils/CP_PrestaCraftHooks.php');
 
-class ResponsivePopupPages extends ObjectModel
+class CP_ResponsivePopupPages extends ObjectModel
 {
     public $id;
     public $id_page;
@@ -54,8 +54,8 @@ class ResponsivePopupPages extends ObjectModel
 
         try {
             foreach ($shops as $shopid) {
-                foreach (PrestaCraftHooks::getHooks(true, false, true) as $hook) {
-                    $rpp = new ResponsivePopupPages();
+                foreach (CP_PrestaCraftHooks::getHooks(true, false, true) as $hook) {
+                    $rpp = new CP_ResponsivePopupPages();
                     $rpp->id_page = $hook;
                     $rpp->id_shop = $shopid;
                     $rpp->enabled = 0;

@@ -11,9 +11,9 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormCore.php';
+require_once _PS_MODULE_DIR_.'custompopup/core/CP_PrestaCraftFormCore.php';
 
-class CloseAndFooterForm extends PrestaCraftFormCore
+class CP_CloseAndFooterForm extends CP_PrestaCraftFormCore
 {
     public function __construct($moduleObject)
     {

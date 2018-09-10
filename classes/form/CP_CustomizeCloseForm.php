@@ -11,9 +11,9 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormCore.php';
+require_once _PS_MODULE_DIR_.'custompopup/core/CP_PrestaCraftFormCore.php';
 
-class CustomizeStyleForm extends PrestaCraftFormCore
+class CP_CustomizeCloseForm extends CP_PrestaCraftFormCore
 {
     public function __construct($moduleObject)
     {
@@ -24,7 +24,7 @@ class CustomizeStyleForm extends PrestaCraftFormCore
     {
         $this->fields = array(
             'form' => array(
-                'legend' => array('title' => $this->module->l('Popup style')),
+                'legend' => array('title' => $this->module->l('[X] Close button style')),
                 'submit' => array(
                     'title' => $this->module->l('Save')
                 ),
@@ -36,35 +36,31 @@ class CustomizeStyleForm extends PrestaCraftFormCore
                     ),
                     array(
                         'type' => 'color',
-                        'label' => $this->module->l('Popup color'),
-                        'name' => 'CUSTOMPOPUP_COLOR',
-                        'class' => 'leftfix',
-                        'hint' => $this->module->l('Inside the popup')
+                        'label' => $this->module->l('Color'),
+                        'name' => 'CUSTOMPOPUP_BUTTON_COLOR',
+                        'class' => 'leftfix'
                     ),
                     array(
                         'type' => 'color',
-                        'label' => $this->module->l('Background color'),
-                        'name' => 'CUSTOMPOPUP_BACK_COLOR',
-                        'class' => 'leftfix',
-                        'hint' => $this->module->l('Outside the popup'),
-                        'desc' => $this->module->l('Leave empty to apply transparent background'),
+                        'label' => $this->module->l('Hover color'),
+                        'hint' => $this->module->l('Color shown after moving your cursor over the button'),
+                        'name' => 'CUSTOMPOPUP_BUTTON_HOVER_COLOR',
+                        'class' => 'leftfix'
                     ),
                     array(
                         'type' => 'text',
-                        'label' => $this->module->l('Content padding'),
-                        'name' => 'CUSTOMPOPUP_PADDING',
+                        'label' => $this->module->l('Size'),
+                        'name' => 'CUSTOMPOPUP_BUTTON_SIZE',
                         'class' => 'fixed-width-sm',
-                        'suffix' => $this->module->l('pixels'),
                     ),
                     array(
                         'type' => 'text',
-                        'label' => $this->module->l('Content top padding'),
-                        'name' => 'CUSTOMPOPUP_TOP_PADDING',
+                        'label' => $this->module->l('Top padding'),
+                        'name' => 'CUSTOMPOPUP_BUTTON_TOP_PADDING',
                         'class' => 'fixed-width-sm',
                         'suffix' => $this->module->l('pixels'),
                     ),
                 ),
-
             ),
         );
 
@@ -76,10 +72,10 @@ class CustomizeStyleForm extends PrestaCraftFormCore
         $fields = array();
 
         $fields['TAB_2'] = Configuration::get('TAB_2');
-        $fields['CUSTOMPOPUP_COLOR'] = Configuration::get('CUSTOMPOPUP_COLOR');
-        $fields['CUSTOMPOPUP_BACK_COLOR'] = Configuration::get('CUSTOMPOPUP_BACK_COLOR');
-        $fields['CUSTOMPOPUP_PADDING'] = Configuration::get('CUSTOMPOPUP_PADDING');
-        $fields['CUSTOMPOPUP_TOP_PADDING'] = Configuration::get('CUSTOMPOPUP_TOP_PADDING');
+        $fields['CUSTOMPOPUP_BUTTON_COLOR'] = Configuration::get('CUSTOMPOPUP_BUTTON_COLOR');
+        $fields['CUSTOMPOPUP_BUTTON_HOVER_COLOR'] = Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR');
+        $fields['CUSTOMPOPUP_BUTTON_SIZE'] = Configuration::get('CUSTOMPOPUP_BUTTON_SIZE');
+        $fields['CUSTOMPOPUP_BUTTON_TOP_PADDING'] = Configuration::get('CUSTOMPOPUP_BUTTON_TOP_PADDING');
 
         return $fields;
     }

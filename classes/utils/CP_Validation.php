@@ -11,7 +11,7 @@
  * @license    http://prestacraft.com/license
  */
 
-class Validation
+class CP_Validation
 {
     protected $module;
     protected $errors;

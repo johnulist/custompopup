@@ -11,9 +11,9 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once(_PS_MODULE_DIR_.'custompopup/classes/db/ResponsivePopupPages.php');
+require_once(_PS_MODULE_DIR_.'custompopup/classes/db/CP_ResponsivePopupPages.php');
 
-class PrestaCraftHooks
+class CP_PrestaCraftHooks
 {
     /**
      * Get hooks using PrestaShop getHooks() method, but with extra filter - in case you want only FrontOffice hooks
@@ -54,7 +54,7 @@ class PrestaCraftHooks
 
     public static function ifRequireHookUpdate()
     {
-        if (count(PrestaCraftHooks::getMissingHooks()) > 0) {
+        if (count(CP_PrestaCraftHooks::getMissingHooks()) > 0) {
             return true;
         } else {
             return false;
@@ -63,8 +63,8 @@ class PrestaCraftHooks
 
     public static function getMissingHooks()
     {
-        $psHooks = PrestaCraftHooks::getHooks(true, false, true);
-        $rpp = new ResponsivePopupPages();
+        $psHooks = CP_PrestaCraftHooks::getHooks(true, false, true);
+        $rpp = new CP_ResponsivePopupPages();
         $moduleHookList = $rpp->getAll();
 
         $psHooksArray = array();
@@ -96,8 +96,8 @@ class PrestaCraftHooks
         $shops = Shop::getShops(true, null, true);
 
         foreach ($shops as $shopid) {
-            foreach (PrestaCraftHooks::getMissingHooks() as $hook) {
-                $rpp = new ResponsivePopupPages();
+            foreach (CP_PrestaCraftHooks::getMissingHooks() as $hook) {
+                $rpp = new CP_ResponsivePopupPages();
                 $rpp->id_page = $hook;
                 $rpp->id_shop = $shopid;
                 $rpp->enabled = 0;

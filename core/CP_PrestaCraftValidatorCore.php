@@ -1,8 +1,8 @@
 <?php
 
-require_once _PS_MODULE_DIR_.'custompopup/classes/utils/Validation.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/utils/CP_Validation.php';
 
-abstract class PrestaCraftValidatorCore
+abstract class CP_PrestaCraftValidatorCore
 {
     protected $module;
     protected $formName;
@@ -36,16 +36,16 @@ abstract class PrestaCraftValidatorCore
 
             $this->formName = $formName;
             $this->validatorFile = $validatorDir.$formName.'Validator.php';
-            $this->validation = new Validation($moduleObject);
+            $this->validation = new CP_Validation($moduleObject);
 
             require_once $validatorDir.$validatorName.'.php';
         }
     }
 
-    abstract protected function processValidation();
+    abstract protected function processCP_Validation();
 
     /**
-     * Validation & form saving
+     * CP_Validation & form saving
      * 1. Validate form and set errors if occured
      * 2. Set all fields errors to one variable
      * 3. Save
@@ -61,7 +61,7 @@ abstract class PrestaCraftValidatorCore
         }
 
         if (Tools::isSubmit($this->formName)) {
-            $this->processValidation();
+            $this->processCP_Validation();
             $this->setErrorsIfOccured();
             $this->save();
         }

@@ -11,10 +11,10 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormCore.php';
-require_once _PS_MODULE_DIR_.'custompopup/classes/db/ResponsivePopupPages.php';
+require_once _PS_MODULE_DIR_.'custompopup/core/CP_PrestaCraftFormCore.php';
+require_once _PS_MODULE_DIR_.'custompopup/classes/db/CP_ResponsivePopupPages.php';
 
-class DisplayForm extends PrestaCraftFormCore
+class CP_DisplayForm extends CP_PrestaCraftFormCore
 {
     public function __construct($moduleObject)
     {
@@ -23,7 +23,7 @@ class DisplayForm extends PrestaCraftFormCore
 
     public function render()
     {
-        $rpp = new ResponsivePopupPages();
+        $rpp = new CP_ResponsivePopupPages();
         $pages = array();
 
         foreach ($rpp->getAll(true) as $item) {
@@ -65,10 +65,10 @@ class DisplayForm extends PrestaCraftFormCore
     {
         $fields = array();
         $fields['TAB_4'] = Configuration::get('TAB_4');
-        $rpp = new ResponsivePopupPages();
+        $rpp = new CP_ResponsivePopupPages();
 
         foreach ($rpp->getAll() as $item) {
-            $fields['pages_'.$item["id_page"]] = ResponsivePopupPages::checkEnable($item["id_page"]);
+            $fields['pages_'.$item["id_page"]] = CP_ResponsivePopupPages::checkEnable($item["id_page"]);
         }
 
         return $fields;

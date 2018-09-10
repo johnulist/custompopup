@@ -11,7 +11,7 @@
  * @license    http://prestacraft.com/license
  */
 
-interface PrestaCraftFormInterface
+interface CP_PrestaCraftFormInterface
 {
     public function render();
 

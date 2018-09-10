@@ -11,9 +11,9 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once _PS_MODULE_DIR_.'custompopup/core/PrestaCraftFormInterface.php';
+require_once _PS_MODULE_DIR_.'custompopup/core/CP_PrestaCraftFormInterface.php';
 
-abstract class PrestaCraftFormCore implements PrestaCraftFormInterface
+abstract class CP_PrestaCraftFormCore implements CP_PrestaCraftFormInterface
 {
     protected $module;
     protected $fields;
