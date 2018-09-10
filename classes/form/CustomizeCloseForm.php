@@ -30,6 +30,11 @@ class CustomizeCloseForm extends PrestaCraftFormCore
                 ),
                 'input' => array(
                     array(
+                        'type' => 'hidden',
+                        'name' => 'TAB_2',
+                        'value' => '1',
+                    ),
+                    array(
                         'type' => 'color',
                         'label' => $this->module->l('Color'),
                         'name' => 'CUSTOMPOPUP_BUTTON_COLOR',
@@ -66,6 +71,7 @@ class CustomizeCloseForm extends PrestaCraftFormCore
     {
         $fields = array();
 
+        $fields['TAB_2'] = Configuration::get('TAB_2');
         $fields['CUSTOMPOPUP_BUTTON_COLOR'] = Configuration::get('CUSTOMPOPUP_BUTTON_COLOR');
         $fields['CUSTOMPOPUP_BUTTON_HOVER_COLOR'] = Configuration::get('CUSTOMPOPUP_BUTTON_HOVER_COLOR');
         $fields['CUSTOMPOPUP_BUTTON_SIZE'] = Configuration::get('CUSTOMPOPUP_BUTTON_SIZE');

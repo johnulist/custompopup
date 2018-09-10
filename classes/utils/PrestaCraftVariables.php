@@ -35,12 +35,8 @@ class PrestaCraftVariables
     {
         $closeType = "'button',";
 
-        if (Configuration::get('CUSTOMPOPUP_OVERLAY')) {
+        if ((int)Configuration::get('CUSTOMPOPUP_OVERLAY') == 1) {
             $closeType .= "'overlay',";
-        }
-
-        if (Configuration::get('CUSTOMPOPUP_ESCAPE')) {
-            $closeType .= "'escape',";
         }
 
         $array = array(

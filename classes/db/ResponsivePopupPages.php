@@ -11,7 +11,7 @@
  * @license    http://prestacraft.com/license
  */
 
-require_once(_PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftTools.php');
+require_once(_PS_MODULE_DIR_.'custompopup/classes/utils/PrestaCraftHooks.php');
 
 class ResponsivePopupPages extends ObjectModel
 {
@@ -54,7 +54,7 @@ class ResponsivePopupPages extends ObjectModel
 
         try {
             foreach ($shops as $shopid) {
-                foreach (PrestaCraftTools::getHooks(true, false, true) as $hook) {
+                foreach (PrestaCraftHooks::getHooks(true, false, true) as $hook) {
                     $rpp = new ResponsivePopupPages();
                     $rpp->id_page = $hook;
                     $rpp->id_shop = $shopid;
@@ -86,18 +86,37 @@ class ResponsivePopupPages extends ObjectModel
 
     public static function setHookValue($hook, $value)
     {
-        Db::getInstance()->update(
-            'responsive_popup_pages',
-            array('enabled' => $value),
-            'id_page="'.$hook.'";'
-        );
+        try {
+            Db::getInstance()->update(
+                'responsive_popup_pages',
+                array('enabled' => $value),
+                'id_page="'.$hook.'";'
+            );
+        } catch (\Exception $e) {
+            throw new PrestaShopException($e->getMessage());
+        }
     }
 
     public static function disableAll()
     {
-        Db::getInstance()->execute(
-            'UPDATE '._DB_PREFIX_.'responsive_popup_pages 
-            SET `enabled`=0;'
-        );
+        try {
+            Db::getInstance()->execute(
+                'UPDATE '._DB_PREFIX_.'responsive_popup_pages 
+                SET `enabled`=0;'
+            );
+        } catch (\Exception $e) {
+            throw new PrestaShopException($e->getMessage());
+        }
+    }
+
+    public static function drop()
+    {
+        try {
+            Db::getInstance()->execute('DROP TABLE '._DB_PREFIX_.'responsive_popup_pages;');
+        } catch (\Exception $e) {
+            throw new PrestaShopException($e->getMessage());
+        }
+
+        return true;
     }
 }

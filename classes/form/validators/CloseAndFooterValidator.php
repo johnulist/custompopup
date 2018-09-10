@@ -68,7 +68,6 @@ class CloseAndFooterValidator extends PrestacraftValidatorCore
         Configuration::updateValue('CUSTOMPOPUP_BUTTON2_ENABLED', $this->getField('CUSTOMPOPUP_BUTTON2_ENABLED'));
 
         Configuration::updateValue('CUSTOMPOPUP_OVERLAY', 0);
-        Configuration::updateValue('CUSTOMPOPUP_ESCAPE', 0);
 
         foreach ($this->getData() as $key =>$value) {
             if (strpos($key, 'closetype_') === 0) {

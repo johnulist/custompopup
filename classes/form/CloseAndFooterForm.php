@@ -42,10 +42,6 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                 'id' => 'OVERLAY',
                 'name' => $this->module->l('Overlay (clicking outside popup)')
             ),
-            array(
-                'id' => 'ESCAPE',
-                'name' => $this->module->l('Clicking ESC key')
-            ),
         );
 
         $align = array(
@@ -71,16 +67,22 @@ class CloseAndFooterForm extends PrestaCraftFormCore
                 ),
                 'input' => array(
                     array(
+                        'type' => 'hidden',
+                        'name' => 'TAB_3',
+                        'value' => '1',
+                    ),
+                    array(
                         'type'    => 'checkbox',
                         'name'    => 'closetype',
-                        'label'   => $this->module->l('Additional close methods'),
+                        'label'   => $this->module->l('Additional close method'),
                         'values'  => array(
                             'query' => $types,
                             'id'    => 'id',
                             'name'  => 'name'
                         ),
                         'desc'    => $this->module->l(
-                            'By default user can close popup by clicking [X] button only or footer buttons (if enabled). You may allow user to close popup by clicking outside popup or escape button.'
+                            'By default user can close popup by clicking [X] button only or footer buttons (if enabled). 
+                            You may allow user to close popup by clicking outside popup.'
                         ),
                     ),
                     array(
@@ -232,8 +234,8 @@ class CloseAndFooterForm extends PrestaCraftFormCore
     {
         $fields = array();
 
+        $fields['TAB_3'] = Configuration::get('TAB_3');
         $fields['closetype_OVERLAY'] = Configuration::get('CUSTOMPOPUP_OVERLAY');
-        $fields['closetype_ESCAPE'] = Configuration::get('CUSTOMPOPUP_ESCAPE');
         $fields['CUSTOMPOPUP_FOOTER'] = Configuration::get('CUSTOMPOPUP_FOOTER');
         $fields['CUSTOMPOPUP_BUTTON1_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_BUTTON1_BACKGROUND');
         $fields['CUSTOMPOPUP_BUTTON2_BACKGROUND'] = Configuration::get('CUSTOMPOPUP_BUTTON2_BACKGROUND');

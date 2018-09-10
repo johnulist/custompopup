@@ -31,3 +31,5 @@ function findUpTag(el, selector) {
     }
     return null;
 }
+
+$(".test").trigger("click");

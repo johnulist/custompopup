@@ -30,6 +30,11 @@ class CustomizeStyleForm extends PrestaCraftFormCore
                 ),
                 'input' => array(
                     array(
+                        'type' => 'hidden',
+                        'name' => 'TAB_2',
+                        'value' => '1',
+                    ),
+                    array(
                         'type' => 'color',
                         'label' => $this->module->l('Popup color'),
                         'name' => 'CUSTOMPOPUP_COLOR',
@@ -70,6 +75,7 @@ class CustomizeStyleForm extends PrestaCraftFormCore
     {
         $fields = array();
 
+        $fields['TAB_2'] = Configuration::get('TAB_2');
         $fields['CUSTOMPOPUP_COLOR'] = Configuration::get('CUSTOMPOPUP_COLOR');
         $fields['CUSTOMPOPUP_BACK_COLOR'] = Configuration::get('CUSTOMPOPUP_BACK_COLOR');
         $fields['CUSTOMPOPUP_PADDING'] = Configuration::get('CUSTOMPOPUP_PADDING');

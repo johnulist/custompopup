@@ -11,6 +11,10 @@
 
 {if $popup_enabled}
     {literal}
+        <link rel="stylesheet" href="{/literal}{$tingle_css}{literal}">
+        <link rel="stylesheet" href="{/literal}{$popup_css}{literal}">
+        <script src="{/literal}{$tingle}{literal}"></script>
+        <script src="{/literal}{$cookie}{literal}"></script>
         <script>
             {/literal}{if !$popup_cookie && $popup_cookie == 0}{literal}
                 prestacraftDeleteCookie('responsive_popup_{/literal}{Context::getContext()->shop->id}{literal}');

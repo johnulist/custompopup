@@ -1,3 +1,19 @@
+.pc-frame {
+    border: 2px solid #31A1C5 !important;
+    padding: 10px;
+    color: #31A1C5;
+    margin-bottom: 10px;
+}
+
+.pc-table td {
+    padding: 5px;
+}
+
+.pc-table {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
 .leftfix {
     margin-left: 10px;
 }

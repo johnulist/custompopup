@@ -41,6 +41,11 @@ class DisplayForm extends PrestaCraftFormCore
                 ),
                 'input' => array(
                     array(
+                        'type' => 'hidden',
+                        'name' => 'TAB_4',
+                        'value' => '1',
+                    ),
+                    array(
                         'type'    => 'checkbox',
                         'name'    => 'pages',
                         'values'  => array(
@@ -59,6 +64,7 @@ class DisplayForm extends PrestaCraftFormCore
     public function getFieldsValues()
     {
         $fields = array();
+        $fields['TAB_4'] = Configuration::get('TAB_4');
         $rpp = new ResponsivePopupPages();
 
         foreach ($rpp->getAll() as $item) {

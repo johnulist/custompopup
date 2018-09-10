@@ -43,24 +43,27 @@
             <img src="{$module_dir}/views/img/pc_logo.png" class="pc-logo">
         </div>
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
+            <li role="presentation" {if !isset($smarty.post.TAB_1) &&
+            !isset($smarty.post.TAB_2) &&
+            !isset($smarty.post.TAB_3) &&
+            !isset($smarty.post.TAB_4)}class="active"{else}{if isset($smarty.post.TAB_1)}class="active"{/if}{/if}>
                 <a href="#settings" aria-controls="home" role="tab" data-toggle="tab">
                     <i class="icon-cogs"></i>&nbsp;&nbsp;&nbsp;{l s='Main settings' mod='custompopup'}</a>
             </li>
 
-            <li role="presentation">
+            <li role="presentation" {if isset($smarty.post.TAB_2)}class="active"{/if}>
                 <a href="#customizestyle" aria-controls="profile" role="tab" data-toggle="tab">
                     <i class="icon-pencil"></i>&nbsp;&nbsp;&nbsp;{l s='Customize style' mod='custompopup'}
                 </a>
             </li>
 
-            <li role="presentation">
+            <li role="presentation" {if isset($smarty.post.TAB_3)}class="active"{/if}>
                 <a href="#extras" aria-controls="profile" role="tab" data-toggle="tab">
                     <i class="icon-remove"></i>&nbsp;&nbsp;&nbsp;{l s='Close & Footer' mod='custompopup'}
                 </a>
             </li>
 
-            <li role="presentation">
+            <li role="presentation" {if isset($smarty.post.TAB_4)}class="active"{/if}>
                 <a href="#display" aria-controls="profile" role="tab" data-toggle="tab">
                     <i class="icon-eye-open"></i>&nbsp;&nbsp;&nbsp;{l s='Display on pages' mod='custompopup'}
                 </a>
@@ -82,16 +85,66 @@
     <div class="col-md-8 col-lg-9 col-xs-12">
         <!-- Tab panes -->
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active" id="settings">
+            <div role="tabpanel" class="tab-pane {if !isset($smarty.post.TAB_1) &&
+            !isset($smarty.post.TAB_2) &&
+            !isset($smarty.post.TAB_3) &&
+            !isset($smarty.post.TAB_4)}active{else}{if isset($smarty.post.TAB_1)}active{/if}{/if}" id="settings">
                 {$TAB_SETTINGS}</div>
-            <div role="tabpanel" class="tab-pane" id="customizestyle">
+
+            <div role="tabpanel" class="tab-pane {if isset($smarty.post.TAB_2)}active{/if}" id="customizestyle">
                 <div class="row">
                 <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_STYLE}</div>
                 <div class="col-xs-12 col-sm-6">{$TAB_CUSTOMIZE_CLOSE}</div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane" id="extras">{$TAB_CLOSE_AND_FOOTER}</div>
-            <div role="tabpanel" class="tab-pane" id="display">{$TAB_DISPLAY}</div>
+
+            <div role="tabpanel" class="tab-pane {if isset($smarty.post.TAB_3)}active{/if}" id="extras">
+                {$TAB_CLOSE_AND_FOOTER}
+            </div>
+
+            <div role="tabpanel" class="tab-pane {if isset($smarty.post.TAB_4)}active{/if}" id="display">
+                <div class="pc-frame">
+                    <p>You can select here one or many available <strong>hooks</strong>.</p>
+                    <p><strong>Hooks</strong> are special places in Your store which appear in different places.</p>
+                    <p>If you are unfamiliar with is, please read about them in PrestaShop documentation.
+                    You should also find "PrestaShop hook list" for your PS version.</p>
+                    <p>Quick "cheat sheet" is in table below:</p>
+                    <table border="1" class="pc-table">
+                        <tr>
+                            <td style="font-weight:bold;">Where do you want to display popup?</td>
+                            <td style="font-weight:bold;">Hook</td>
+                            <td style="font-weight:bold;">Explanation</td>
+                        </tr>
+                        <tr>
+                            <td>Each page</td>
+                            <td>displayFooter</td>
+                            <td>Your store footer is displayed in each page, that's why you can "hook" a popup there</td>
+                        </tr>
+                        <tr>
+                            <td>Homepage</td>
+                            <td>displayHome</td>
+                            <td>Hook which is executed only in Homepage</td>
+                        </tr>
+                    </table>
+
+                    <p>I won't explain each hook because their names should be self-explanatory
+                        and the list of hooks may vary between PrestaShop versions.
+                    You may also use your own hooks or a hook created by any module.</p>
+
+                    <p>If this list of hooks is outdated - a button will appear and you will be able
+                    to synchronize this list with your available hooks.</p>
+                </div>
+
+                {if ($IF_REQUIRE_HOOK_UPDATE)}
+                    {include file='./hook_button.tpl'}
+                {else}
+                    <div style="text-align: center;margin: 10px 0;color: green;">
+                        Hook list is up to date.
+                    </div>
+                {/if}
+
+                {$TAB_DISPLAY}
+            </div>
         </div>
     </div>
 </div>

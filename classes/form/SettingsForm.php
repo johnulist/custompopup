@@ -26,6 +26,11 @@ class SettingsForm extends PrestaCraftFormCore
             'form' => array(
                 'input' => array(
                     array(
+                        'type' => 'hidden',
+                        'name' => 'TAB_1',
+                        'value' => '1',
+                    ),
+                    array(
                         'type' => 'switch',
                         'label' => $this->module->l('Enable popup?'),
                         'name' => 'CUSTOMPOPUP_ENABLED',
@@ -90,6 +95,8 @@ class SettingsForm extends PrestaCraftFormCore
     {
         $languages = Language::getLanguages(true);
         $fields = array();
+
+        $fields['TAB_1'] = Configuration::get('TAB_1');
 
         foreach ($languages as $lang) {
             @$fields['CUSTOMPOPUP_CONTENT'][$lang['id_lang']] = Configuration::get("CUSTOMPOPUP_CONTENT", $lang['id_lang']);
