@@ -26,3 +26,7 @@ div.popup img {
 	display: block;
 	width: 100%;
 }
+
+.tingle-modal-box__content img {
+	max-width: 100% !important;
+}

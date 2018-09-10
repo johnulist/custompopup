@@ -45,7 +45,7 @@ class SettingsValidator extends PrestacraftValidatorCore
                 Configuration::updateValue("CUSTOMPOPUP_CONTENT", array(
                         $lang['id_lang'] => $this->getField('CUSTOMPOPUP_CONTENT_'.$lang['id_lang']),
                         $lang['id_lang'] => $this->getField('CUSTOMPOPUP_CONTENT_'.$lang['id_lang'])
-                    )
+                    ), true
                 );
             }
         }

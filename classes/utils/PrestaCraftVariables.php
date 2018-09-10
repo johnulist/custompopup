@@ -23,7 +23,7 @@ class PrestaCraftVariables
         Configuration::updateValue('CUSTOMPOPUP_BUTTON_COLOR', '#000');
         Configuration::updateValue('CUSTOMPOPUP_BUTTON_HOVER_COLOR', '#111');
         Configuration::updateValue('CUSTOMPOPUP_BUTTON_SIZE', '26');
-        Configuration::updateValue('CUSTOMPOPUP_BUTTON_TOP_PADDING', '5');
+        Configuration::updateValue('CUSTOMPOPUP_BUTTON_TOP_PADDING', '15');
         Configuration::updateValue('CUSTOMPOPUP_BUTTON_POSITION', 'right');
         Configuration::updateValue('CUSTOMPOPUP_MAINSELECT', 1);
         Configuration::updateValue('CUSTOMPOPUP_ENABLED', 0);
