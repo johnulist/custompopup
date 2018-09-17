@@ -117,7 +117,7 @@ class CP_CloseAndFooterValidator extends CP_PrestaCraftValidatorCore
             Configuration::updateValue("CUSTOMPOPUP_FOOTER_TEXT", array(
                     $lang['id_lang'] => $this->getField('CUSTOMPOPUP_FOOTER_TEXT_'.$lang['id_lang']),
                     $lang['id_lang'] => $this->getField('CUSTOMPOPUP_FOOTER_TEXT_'.$lang['id_lang'])
-                )
+                ), true
             );
         }
 

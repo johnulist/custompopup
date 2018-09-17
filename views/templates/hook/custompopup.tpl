@@ -45,7 +45,7 @@
                         }
                     });
 
-                    var content = '{/literal}{$content_{Context::getContext()->language->id}|unescape: "html" nofilter}{literal}';
+                    var content = "{/literal}{$content_{Context::getContext()->language->id}|unescape: "html" nofilter}{literal}";
                     // set content
                     modal.setContent(content);
 
