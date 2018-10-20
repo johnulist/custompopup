@@ -100,9 +100,11 @@
                 padding:{/literal} {$padding}{literal}px;
                 padding-top:{/literal} {$top_padding}{literal}px;
             }
+            {/literal}{if $back_color}{literal}
             .tingle-modal--visible {
                 background-color: {/literal}{$back_color}{literal};
             }
+            {/literal}{/if}{literal}
             .prestacraft-close:hover {
                 color: {/literal}{$button_hover_color}{literal};
             }
