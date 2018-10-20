@@ -24,6 +24,11 @@ class CP_CustomizeStyleValidator extends CP_PrestaCraftValidatorCore
         );
 
         $this->validation->validate(
+            $this->module->l('Background color'),
+            $this->getField('CUSTOMPOPUP_BACK_COLOR')
+        );
+
+        $this->validation->validate(
             $this->module->l('Content padding'),
             $this->getField('CUSTOMPOPUP_PADDING'),
             array(
