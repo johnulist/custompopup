@@ -1,6 +1,6 @@
 # Custom popup notification (custompopup)
 
-### Current version: 2.0.0
+### Current version: 2.0.1
 
 | PS compatibility       |   Ok?                |
 | ---------------------- | --------------------:|
