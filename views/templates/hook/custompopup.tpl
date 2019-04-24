@@ -41,7 +41,6 @@
                         },
                         beforeClose: function() {
                             return true; // close the modal
-                            return false; // nothing happens
                         }
                     });
 
