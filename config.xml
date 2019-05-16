@@ -2,7 +2,7 @@
 <module>
 	<name>custompopup</name>
 	<displayName><![CDATA[Custom popup notification]]></displayName>
-	<version><![CDATA[2.0.0]]></version>
+	<version><![CDATA[2.0.2]]></version>
 	<description><![CDATA[Customize and display a responsive popup window for chosen page(s).]]></description>
 	<author><![CDATA[PrestaCraft]]></author>
 	<tab><![CDATA[front_office_features]]></tab>

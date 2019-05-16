@@ -16,6 +16,10 @@
         <script src="{/literal}{$tingle}{literal}"></script>
         <script src="{/literal}{$cookie}{literal}"></script>
         <script>
+            if (typeof id_lang === 'undefined') {
+                var id_lang = {/literal}{Context::getContext()->language->id}{literal};
+            }
+
             {/literal}{if !$popup_cookie && $popup_cookie == 0}{literal}
                 prestacraftDeleteCookie('responsive_popup_{/literal}{Context::getContext()->shop->id}{literal}');
             {/literal}{/if}{literal}
